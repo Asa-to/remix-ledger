@@ -86,9 +86,14 @@ const Home: FC = () => {
                 />
               </Grid.Col>
               <Grid.Col span="content">
-                <Radio.Group label="収支選択" name="type" required>
+                <Radio.Group
+                  label="収支選択"
+                  name="type"
+                  required
+                  defaultValue="0"
+                >
                   <Group>
-                    <Radio value="0" label="収入" defaultChecked />
+                    <Radio value="0" label="収入" />
                     <Radio value="1" label="支出" />
                   </Group>
                 </Radio.Group>
