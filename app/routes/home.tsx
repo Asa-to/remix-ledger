@@ -4,7 +4,6 @@ import {
   Button,
   Grid,
   Group,
-  List,
   Modal,
   Radio,
   Select,
@@ -18,6 +17,7 @@ import type { ActionArgs, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { createPayment, getAllPayments } from "~/models/payment.server";
 import { getAllUsers } from "~/models/user.server";
+import { PaymentCard } from "~/components/PaymentCard";
 
 type LoaderData = {
   payments: Awaited<ReturnType<typeof getAllPayments>>;
@@ -32,9 +32,9 @@ export const loader: LoaderFunction = async () => {
 export async function action({ request }: ActionArgs) {
   const body = await request.formData();
   const payment = await createPayment({
+    payDate: new Date(body.get("payDate") as string),
     category: body.get("category") as string,
-    type: Number(body.get("type")),
-    value: Number(body.get("value")),
+    value: Number(body.get("value")) * (body.get("type") === "1" ? -1 : 1),
     userId: body.get("userId") as string,
     remarks: body.get("remarks") as string,
   });
@@ -54,15 +54,7 @@ const Home: FC = () => {
 
   return (
     <Stack>
-      <List>
-        {payments.map((payment) => {
-          return (
-            <List.Item key={`payment item ${payment.id}`}>
-              {payment.category}
-            </List.Item>
-          );
-        })}
-      </List>
+      <PaymentCard payments={payments} users={users} />
       <Button onClick={open}>収支入力</Button>
       <Modal opened={opened} onClose={close} title="収支入力">
         <Form method="POST" onReset={close} onSubmit={close}>
@@ -106,7 +98,7 @@ const Home: FC = () => {
               defaultValue={usersForSelect[0].value}
               required
             />
-            <TextInput label="収支" type="number" required />
+            <TextInput label="収支" type="number" name="value" required />
             <TextInput label="備考" name="remarks" />
             <Stack sx={{ flexDirection: "row" }}>
               <Button type="reset">キャンセル</Button>

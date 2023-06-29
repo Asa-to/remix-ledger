@@ -1,4 +1,3 @@
-import { Title } from "@mantine/core";
 import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction } from "@remix-run/node";
 import {
