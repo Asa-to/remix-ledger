@@ -1,10 +1,8 @@
 import { Box, Text } from "@mantine/core";
 import type { Payment, User } from "@prisma/client";
 import type { FC } from "react";
-
-type StringifyDates<T> = {
-  [K in keyof T]: T[K] extends Date ? string : T[K];
-};
+import type { StringifyDates } from "~/types";
+import { formatDateString } from "~/utils/date";
 
 type Props = {
   payments: StringifyDates<Payment>[];
@@ -15,13 +13,6 @@ export const PaymentCard: FC<Props> = (props) => {
   const { payments, users } = props;
   const total = payments.reduce((total, curVal) => total + curVal.value, 0);
   let curDate = "";
-  function formatDateString(isoString: string): string {
-    const date = new Date(isoString);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const day = date.getDate().toString().padStart(2, "0");
-    return `${year}年${month}月${day}日`;
-  }
 
   return (
     <Box>
