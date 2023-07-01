@@ -31,8 +31,10 @@ const UserPage: FC = () => {
         })}
       </List>
       <Form method="POST">
-        <TextInput name="name" />
-        <Button type="submit">作成</Button>
+        <Stack>
+          <TextInput name="name" />
+          <Button type="submit">作成</Button>
+        </Stack>
       </Form>
     </Stack>
   );
