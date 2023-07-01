@@ -15,32 +15,26 @@ export const AppBar: FC<Props> = (props) => {
       navbar={
         <Navbar width={{ base: 300 }} height="100%" p="xs">
           <Stack spacing="8px">
-            <Button>
-              <Link
-                to="home"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                ホーム
-              </Link>
-            </Button>
-            <Button>
-              <Link
-                to="user"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                ユーザー
-              </Link>
-            </Button>
+            <Link
+              to="home"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <Button>ホーム</Button>
+            </Link>
+            <Link
+              to="user"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <Button>ユーザー</Button>
+            </Link>
           </Stack>
         </Navbar>
       }
       header={
         <Header height={60} p="xs">
-          <Title>
-            <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-              入出金管理
-            </Link>
-          </Title>
+          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+            <Title>入出金管理</Title>
+          </Link>
         </Header>
       }
       styles={(theme) => ({
