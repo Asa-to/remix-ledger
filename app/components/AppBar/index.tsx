@@ -1,6 +1,16 @@
-import { AppShell, Button, Header, Navbar, Stack, Title } from "@mantine/core";
+import {
+  AppShell,
+  Burger,
+  Button,
+  Flex,
+  Header,
+  Navbar,
+  Stack,
+  Title,
+} from "@mantine/core";
 import { Link } from "@remix-run/react";
 import type { FC, ReactNode } from "react";
+import { useState } from "react";
 
 type Props = {
   children: ReactNode;
@@ -8,17 +18,15 @@ type Props = {
 
 export const AppBar: FC<Props> = (props) => {
   const { children } = props;
+  const [open, setOpen] = useState(false);
 
   return (
     <AppShell
       padding="md"
       navbar={
-        <Navbar width={{ base: 300 }} height="100%" p="xs">
+        <Navbar width={{ base: 300 }} height="100%" p="xs" hidden={!open}>
           <Stack spacing="8px">
-            <Link
-              to="home"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
+            <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
               <Button>ホーム</Button>
             </Link>
             <Link
@@ -32,9 +40,12 @@ export const AppBar: FC<Props> = (props) => {
       }
       header={
         <Header height={60} p="xs">
-          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-            <Title>入出金管理</Title>
-          </Link>
+          <Flex justify="space-between" direction="row">
+            <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+              <Title>入出金管理</Title>
+            </Link>
+            <Burger onClick={() => setOpen((v) => !v)} opened={open} />
+          </Flex>
         </Header>
       }
       styles={(theme) => ({
