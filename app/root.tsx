@@ -24,12 +24,10 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <AppBar>
-          <Outlet />
-          <ScrollRestoration />
-          <Scripts />
-          <LiveReload />
-        </AppBar>
+        <Outlet />
+        <ScrollRestoration />
+        <Scripts />
+        <LiveReload />
       </body>
     </html>
   );
