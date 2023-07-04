@@ -12,7 +12,7 @@ import {
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, Outlet, useLoaderData } from "@remix-run/react";
 import type { ActionArgs, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { createPayment, getAllPayments } from "~/models/payment.server";
@@ -31,12 +31,11 @@ export const loader: LoaderFunction = async () => {
 
 export async function action({ request }: ActionArgs) {
   const body = await request.formData();
+  console.log(new Date(body.get("payDate") as string));
   const payment = await createPayment({
     payDate: new Date(
-      Date.now() +
-        (new Date(body.get("payDate") as string).getTimezoneOffset() + 9 * 60) *
-          60 *
-          1000
+      new Date(body.get("payDate") as string).getTime() +
+        (new Date().getTimezoneOffset() + 9 * 60) * 60 * 1000
     ),
     category: body.get("category") as string,
     value: Number(body.get("value")) * (body.get("type") === "1" ? -1 : 1),
@@ -46,7 +45,7 @@ export async function action({ request }: ActionArgs) {
   return payment;
 }
 
-const Home: FC = () => {
+const App: FC = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const { payments, users } = useLoaderData<LoaderData>();
   const [categories, setCategories] = useState(
@@ -64,7 +63,12 @@ const Home: FC = () => {
       <Modal opened={opened} onClose={close} title="収支入力">
         <Form method="POST" onReset={close} onSubmit={close}>
           <Stack spacing={8}>
-            <DateInput label="支払日" name="payDate" required />
+            <DateInput
+              label="支払日"
+              name="payDate"
+              required
+              defaultValue={new Date()}
+            />
             <Grid>
               <Grid.Col span="auto">
                 <Select
@@ -116,4 +120,4 @@ const Home: FC = () => {
   );
 };
 
-export default Home;
+export default App;
