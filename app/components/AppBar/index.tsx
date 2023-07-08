@@ -1,16 +1,18 @@
+import { Box, Drawer, useMantineTheme } from "@mantine/core";
 import {
   AppShell,
   Burger,
-  Button,
   Flex,
   Header,
+  MediaQuery,
   Navbar,
-  Stack,
   Title,
 } from "@mantine/core";
-import { Link } from "@remix-run/react";
+import { useMediaQuery } from "@mantine/hooks";
+import { Link, Outlet } from "@remix-run/react";
 import type { FC, ReactNode } from "react";
 import { useState } from "react";
+import { NavbarContent } from "./NavbarContent";
 
 type Props = {
   children: ReactNode;
@@ -18,24 +20,34 @@ type Props = {
 
 export const AppBar: FC<Props> = (props) => {
   const { children } = props;
-  const [open, setOpen] = useState(false);
+  const [opened, setOpened] = useState(false);
+  const theme = useMantineTheme();
+  const isDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`, true);
 
   return (
     <AppShell
       padding="md"
+      navbarOffsetBreakpoint="sm"
       navbar={
-        <Navbar width={{ base: 300 }} height="100%" p="xs" hidden={!open}>
-          <Stack spacing="8px">
-            <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-              <Button>ホーム</Button>
-            </Link>
-            <Link
-              to="user"
-              style={{ textDecoration: "none", color: "inherit" }}
+        <Navbar
+          p="md"
+          hiddenBreakpoint="sm"
+          width={{ sm: 200, lg: 300 }}
+          hidden={!opened}
+        >
+          {isDesktop ? (
+            <NavbarContent onClick={() => setOpened(false)} />
+          ) : (
+            <Drawer
+              opened={opened}
+              onClose={() => setOpened(false)}
+              size={300}
+              title="入出金管理"
+              overlayProps={{ opacity: 0.5, blur: 4 }}
             >
-              <Button>ユーザー</Button>
-            </Link>
-          </Stack>
+              <NavbarContent onClick={() => setOpened(false)} />
+            </Drawer>
+          )}
         </Navbar>
       }
       header={
@@ -44,7 +56,9 @@ export const AppBar: FC<Props> = (props) => {
             <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
               <Title>入出金管理</Title>
             </Link>
-            <Burger onClick={() => setOpen((v) => !v)} opened={open} />
+            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+              <Burger onClick={() => setOpened((v) => !v)} opened={opened} />
+            </MediaQuery>
           </Flex>
         </Header>
       }
