@@ -1,12 +1,11 @@
 import { Box, Text } from "@mantine/core";
 import type { Payment, User } from "@prisma/client";
 import type { FC } from "react";
-import type { StringifyDates } from "~/types";
-import { formatDateString } from "~/utils/date";
+import { formatDateTime } from "~/utils/date/format";
 
 type Props = {
-  payments: StringifyDates<Payment>[];
-  users: StringifyDates<User>[];
+  payments: Payment[];
+  users: User[];
 };
 
 export const PaymentCard: FC<Props> = (props) => {
@@ -17,11 +16,12 @@ export const PaymentCard: FC<Props> = (props) => {
   return (
     <Box>
       {payments.map((payment) => {
-        const flag = curDate !== formatDateString(payment.payDate);
-        curDate = formatDateString(payment.payDate);
+        const formatPayDate = formatDateTime(payment.payDate, "YYYY年MM月DD日");
+        const isSameDate = curDate === formatPayDate;
+        curDate = formatPayDate;
         return (
           <Box key={`payment ${curDate} ${payment.id}`}>
-            {flag && (
+            {!isSameDate && (
               <Box
                 display="grid"
                 sx={{
@@ -29,7 +29,7 @@ export const PaymentCard: FC<Props> = (props) => {
                   backgroundColor: "#e0e0e0",
                 }}
               >
-                <Text>{formatDateString(payment.payDate)}</Text>
+                <Text>{formatPayDate}</Text>
                 <Text align="right">{total}</Text>
               </Box>
             )}
