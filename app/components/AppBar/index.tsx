@@ -1,4 +1,4 @@
-import { Drawer, useMantineTheme } from "@mantine/core";
+import { Box, Drawer, useMantineTheme } from "@mantine/core";
 import {
   AppShell,
   Burger,
@@ -38,15 +38,18 @@ export const AppBar: FC<Props> = (props) => {
           {isDesktop ? (
             <NavbarContent onClick={() => setOpened(false)} />
           ) : (
-            <Drawer
-              opened={opened}
-              onClose={() => setOpened(false)}
-              size={300}
-              title="入出金管理"
-              overlayProps={{ opacity: 0.5, blur: 4 }}
-            >
-              <NavbarContent onClick={() => setOpened(false)} />
-            </Drawer>
+            <Box sx={{ position: "relative" }}>
+              <Drawer
+                opened={opened}
+                onClose={() => setOpened(false)}
+                size={300}
+                title="入出金管理"
+                overlayProps={{ opacity: 0.5, blur: 4 }}
+                sx={{ position: "absolute", left: 0 }}
+              >
+                <NavbarContent onClick={() => setOpened(false)} />
+              </Drawer>
+            </Box>
           )}
         </Navbar>
       }
