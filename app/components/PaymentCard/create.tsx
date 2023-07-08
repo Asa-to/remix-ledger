@@ -16,10 +16,11 @@ import { useState } from "react";
 type Props = {
   payments: Payment[];
   users: User[];
+  close: () => void;
 };
 
 export const PaymentCreate: FC<Props> = (props) => {
-  const { payments, users } = props;
+  const { payments, users, close } = props;
   const [categories, setCategories] = useState(
     Array.from(new Set(payments.map((item) => item.category)))
   );

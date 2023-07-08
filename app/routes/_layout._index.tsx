@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { Button, Modal, Stack } from "@mantine/core";
+import { Box, Button, Modal, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { createPayment, getAllPayments } from "~/models/payment.server";
@@ -37,8 +37,13 @@ const App: FC = () => {
     <Stack>
       <PaymentCard payments={payments} users={users} />
       <Button onClick={open}>収支入力</Button>
-      <Modal opened={opened} onClose={close} title="収支入力">
-        <PaymentCreate payments={payments} users={users} />
+      <Modal
+        opened={opened}
+        onClose={close}
+        title="収支入力"
+        styles={{ inner: { boxSizing: "border-box" } }}
+      >
+        <PaymentCreate payments={payments} users={users} close={close} />
       </Modal>
     </Stack>
   );
