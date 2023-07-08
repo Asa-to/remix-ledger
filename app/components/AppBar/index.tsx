@@ -2,22 +2,22 @@ import { Drawer, useMantineTheme } from "@mantine/core";
 import {
   AppShell,
   Burger,
-  Button,
   Flex,
   Header,
   MediaQuery,
   Navbar,
-  Stack,
   Title,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { Link } from "@remix-run/react";
 import type { FC, ReactNode } from "react";
 import { useState } from "react";
+import { NavbarContent } from "./NavbarContent";
 
 type Props = {
   children: ReactNode;
 };
+
 export const AppBar: FC<Props> = (props) => {
   const { children } = props;
   const [opened, setOpened] = useState(false);
@@ -36,7 +36,7 @@ export const AppBar: FC<Props> = (props) => {
           hidden={!opened}
         >
           {isDesktop ? (
-            <NavbarContent />
+            <NavbarContent onClick={() => setOpened(false)} />
           ) : (
             <Drawer
               opened={opened}
@@ -45,7 +45,7 @@ export const AppBar: FC<Props> = (props) => {
               title="入出金管理"
               overlayProps={{ opacity: 0.5, blur: 4 }}
             >
-              <NavbarContent />
+              <NavbarContent onClick={() => setOpened(false)} />
             </Drawer>
           )}
         </Navbar>
@@ -75,14 +75,3 @@ export const AppBar: FC<Props> = (props) => {
     </AppShell>
   );
 };
-
-const NavbarContent: FC = () => (
-  <Stack spacing="8px">
-    <Button component={Link} to="/">
-      ホーム
-    </Button>
-    <Button component={Link} to="/user">
-      ユーザー
-    </Button>
-  </Stack>
-);
