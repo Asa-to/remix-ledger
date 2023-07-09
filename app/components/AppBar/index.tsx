@@ -13,6 +13,7 @@ import { Link, Outlet } from "@remix-run/react";
 import type { FC, ReactNode } from "react";
 import { useState } from "react";
 import { NavbarContent } from "./NavbarContent";
+import { HeaderContent } from "./Header";
 
 type Props = {
   children: ReactNode;
@@ -52,14 +53,11 @@ export const AppBar: FC<Props> = (props) => {
       }
       header={
         <Header height={60} p="xs">
-          <Flex justify="space-between" direction="row">
-            <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-              <Title>入出金管理</Title>
-            </Link>
+          <HeaderContent title="入出金管理">
             <MediaQuery largerThan="sm" styles={{ display: "none" }}>
               <Burger onClick={() => setOpened((v) => !v)} opened={opened} />
             </MediaQuery>
-          </Flex>
+          </HeaderContent>
         </Header>
       }
       styles={(theme) => ({
