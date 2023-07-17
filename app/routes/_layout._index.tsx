@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { Box, Button, Modal, Stack } from "@mantine/core";
+import { Button, Modal, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { createPayment, getAllPayments } from "~/models/payment.server";

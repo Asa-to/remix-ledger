@@ -1,8 +1,9 @@
-import type { Payment } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "~/db.server";
 
-type Omited = "id" | "updatedAt" | "createdAt";
-export const createPayment = async (payment: Omit<Payment, Omited>) => {
+export const createPayment = async (
+  payment: Prisma.PaymentUncheckedCreateInput
+) => {
   return prisma.payment.create({ data: payment });
 };
 
