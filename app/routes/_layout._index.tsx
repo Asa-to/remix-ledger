@@ -16,11 +16,9 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export const action = async ({ request }: ActionArgs) => {
   const body = await request.formData();
+
   const payment = await createPayment({
-    payDate: new Date(
-      new Date(body.get("payDate") as string).getTime() +
-        (new Date().getTimezoneOffset() + 9 * 60) * 60 * 1000
-    ),
+    payDate: body.get("payDate") as string,
     category: body.get("category") as string,
     value: Number(body.get("value")) * (body.get("type") === "1" ? -1 : 1),
     userId: body.get("userId") as string,

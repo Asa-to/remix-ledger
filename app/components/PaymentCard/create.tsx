@@ -58,8 +58,8 @@ export const PaymentCreate: FC<Props> = (props) => {
           <Grid.Col span="content">
             <Radio.Group label="収支選択" name="type" required defaultValue="0">
               <Group>
-                <Radio value="0" label="収入" />
-                <Radio value="1" label="支出" />
+                <Radio value="0" label="支出" />
+                <Radio value="1" label="収入" />
               </Group>
             </Radio.Group>
           </Grid.Col>
