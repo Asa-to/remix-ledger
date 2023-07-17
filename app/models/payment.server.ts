@@ -26,3 +26,12 @@ export const getCategories = async (id: string) => {
     },
   });
 };
+
+export const getBalance = async () => {
+  return prisma.payment.groupBy({
+    by: ["value"],
+    _sum: {
+      value: true,
+    },
+  });
+};
