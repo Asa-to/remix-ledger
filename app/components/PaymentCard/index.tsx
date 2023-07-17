@@ -12,9 +12,23 @@ export const PaymentCard: FC<Props> = (props) => {
   const { payments, users } = props;
   const total = payments.reduce((total, curVal) => total + curVal.value, 0);
   let curDate = "";
+  const monthlyTotal = 1000;
+  const budget = 100;
 
   return (
     <Box>
+      <Box
+        display="grid"
+        sx={{
+          gridTemplateColumns: "64px 1fr",
+          gridTemplateRows: "repeat(2, 1fr)",
+        }}
+      >
+        <Text>残高</Text>
+        <Text>{budget.toLocaleString()}</Text>
+        <Text>月合計</Text>
+        <Text>{monthlyTotal.toLocaleString()}</Text>
+      </Box>
       {payments.map((payment) => {
         const formatPayDate = formatDateTime(payment.payDate, "YYYY年MM月DD日");
         const isSameDate = curDate === formatPayDate;
