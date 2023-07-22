@@ -8,7 +8,7 @@ type Props = {
   users: User[];
 };
 
-export const PaymentCard: FC<Props> = (props) => {
+export const PaymentCardList: FC<Props> = (props) => {
   const { payments, users } = props;
   const total = payments.reduce((total, curVal) => total + curVal.value, 0);
   let curDate = "";

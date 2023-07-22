@@ -4,7 +4,7 @@ import { useDisclosure } from "@mantine/hooks";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { createPayment, getAllPayments } from "~/models/payment.server";
 import { getAllUsers } from "~/models/user.server";
-import { PaymentCard } from "~/components/PaymentCard";
+import { PaymentCardList } from "~/components/PaymentCard";
 import { PaymentCreate } from "~/components/PaymentCard/create";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
 
@@ -33,7 +33,7 @@ const App: FC = () => {
 
   return (
     <Stack>
-      <PaymentCard payments={payments} users={users} />
+      <PaymentCardList payments={payments} users={users} />
       <Button onClick={open}>収支入力</Button>
       <Modal
         opened={opened}
