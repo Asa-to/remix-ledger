@@ -20,7 +20,7 @@ export const action = async ({ request }: ActionArgs) => {
   const payment = await createPayment({
     payDate: body.get("payDate") as string,
     category: body.get("category") as string,
-    value: Number(body.get("value")) * (body.get("type") === "1" ? -1 : 1),
+    value: Number(body.get("value")) * (body.get("type") === "1" ? 1 : -1),
     userId: body.get("userId") as string,
     remarks: body.get("remarks") as string,
   });
