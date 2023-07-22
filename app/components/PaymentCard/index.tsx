@@ -1,5 +1,6 @@
 import { Box, Text } from "@mantine/core";
 import type { Payment, User } from "@prisma/client";
+import { Link } from "@remix-run/react";
 import type { FC } from "react";
 import { formatDateTime } from "~/utils/date/format";
 
@@ -47,7 +48,12 @@ export const PaymentCardList: FC<Props> = (props) => {
                 <Text align="right">{total}</Text>
               </Box>
             )}
-            <Box display="grid" sx={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
+            <Box
+              display="grid"
+              sx={{ gridTemplateColumns: "repeat(3, 1fr)" }}
+              component={Link}
+              to={`/detail/${payment.id}`}
+            >
               <Text>
                 {users.filter((user) => user.id === payment.userId)?.[0].name}
               </Text>
