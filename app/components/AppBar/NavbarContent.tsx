@@ -10,8 +10,8 @@ export const NavbarContent: FC<Props> = (props) => {
   const { onClick } = props;
   return (
     <Stack spacing="8px">
-      <Button component={Link} to="/" onClick={onClick}>
-        ホーム
+      <Button component={Link} to="/payment" onClick={onClick}>
+        入出金
       </Button>
       <Button component={Link} to="/user" onClick={onClick}>
         ユーザー

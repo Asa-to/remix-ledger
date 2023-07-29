@@ -82,7 +82,7 @@ export const PaymentCreate: FC<Props> = (props) => {
           label="収支"
           type="number"
           name="value"
-          defaultValue={initialValue?.value}
+          defaultValue={initialValue && Math.abs(initialValue.value)}
           required
         />
         <TextInput

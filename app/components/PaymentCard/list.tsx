@@ -7,10 +7,11 @@ import { formatDateTime } from "~/utils/date/format";
 type Props = {
   payments: Payment[];
   users: User[];
+  setCurData: (id: string) => void;
 };
 
 export const PaymentCardList: FC<Props> = (props) => {
-  const { payments, users } = props;
+  const { payments, users, setCurData } = props;
   const total = payments.reduce((total, curVal) => total + curVal.value, 0);
   let curDate = "";
   const monthlyTotal = 1000;
@@ -35,7 +36,10 @@ export const PaymentCardList: FC<Props> = (props) => {
         const isSameDate = curDate === formatPayDate;
         curDate = formatPayDate;
         return (
-          <Box key={`payment ${curDate} ${payment.id}`}>
+          <Box
+            key={`payment ${curDate} ${payment.id}`}
+            onClick={() => setCurData(payment.id)}
+          >
             {!isSameDate && (
               <Box
                 display="grid"
@@ -51,8 +55,8 @@ export const PaymentCardList: FC<Props> = (props) => {
             <Box
               display="grid"
               sx={{ gridTemplateColumns: "repeat(3, 1fr)" }}
-              component={Link}
-              to={`/detail/${payment.id}`}
+              // component={Link}
+              // to={`/detail/${payment.id}`}
             >
               <Text>
                 {users.filter((user) => user.id === payment.userId)?.[0].name}

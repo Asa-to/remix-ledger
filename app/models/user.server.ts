@@ -7,3 +7,7 @@ export const createUser = async (name: string, icon?: string) => {
 export const getAllUsers = async () => {
   return prisma.user.findMany();
 };
+
+export const getUser = async (id: string) => {
+  return prisma.user.findFirst({ where: { id } });
+};

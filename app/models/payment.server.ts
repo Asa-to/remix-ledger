@@ -17,11 +17,8 @@ export const getPayment = async (id: string) => {
   return prisma.payment.findFirst({ where: { id } });
 };
 
-export const getCategories = async (id: string) => {
+export const getCategories = async () => {
   return prisma.payment.findMany({
-    where: {
-      id,
-    },
     select: {
       category: true,
     },
@@ -33,6 +30,26 @@ export const getBalance = async () => {
     by: ["value"],
     _sum: {
       value: true,
+    },
+  });
+};
+
+export const updatePayment = async (
+  id: string,
+  payment: Prisma.PaymentUncheckedCreateInput
+) => {
+  return prisma.payment.update({
+    where: {
+      id,
+    },
+    data: payment,
+  });
+};
+
+export const deletePayment = async (id: string) => {
+  return prisma.payment.delete({
+    where: {
+      id,
     },
   });
 };

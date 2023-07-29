@@ -1,15 +1,6 @@
-import { Box, Drawer, useMantineTheme } from "@mantine/core";
-import {
-  AppShell,
-  Burger,
-  Flex,
-  Header,
-  MediaQuery,
-  Navbar,
-  Title,
-} from "@mantine/core";
+import { Drawer, useMantineTheme } from "@mantine/core";
+import { AppShell, Burger, Header, MediaQuery, Navbar } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { Link, Outlet } from "@remix-run/react";
 import type { FC, ReactNode } from "react";
 import { useState } from "react";
 import { NavbarContent } from "./NavbarContent";
