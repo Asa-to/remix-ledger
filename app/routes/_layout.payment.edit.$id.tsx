@@ -92,7 +92,7 @@ export const PaymentCreate = () => {
               label="収支選択"
               name="type"
               required
-              defaultValue={0 < payment.value ? "0" : "1"}
+              defaultValue={payment.value < 0 ? "0" : "1"}
             >
               <Group>
                 <Radio value="0" label="支出" />
@@ -115,7 +115,8 @@ export const PaymentCreate = () => {
           type="number"
           name="value"
           required
-          defaultValue={payment.value}
+          pattern="^[0-9]+$"
+          defaultValue={Math.abs(payment.value).toString()}
         />
         <TextInput label="備考" name="remarks" />
         <Stack sx={{ flexDirection: "row" }}>

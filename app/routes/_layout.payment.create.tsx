@@ -91,11 +91,17 @@ export const PaymentCreate = () => {
         <Select
           name="userId"
           data={usersForSelect}
-          label="支払い者"
+          label="ユーザー"
           defaultValue={usersForSelect[0].value}
           required
         />
-        <TextInput label="収支" type="number" name="value" required />
+        <TextInput
+          label="収支"
+          type="text"
+          name="value"
+          required
+          pattern="^[0-9]+$"
+        />
         <TextInput label="備考" name="remarks" />
         <Stack sx={{ flexDirection: "row" }}>
           <Button component={Link} to={"/payment"}>
