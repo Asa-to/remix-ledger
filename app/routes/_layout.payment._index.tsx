@@ -32,7 +32,8 @@ const App: FC = () => {
   );
 
   const rows = payments.map((payment) => {
-    const valueColor = 0 < payment.value ? "red" : "blue";
+    const isIncome = 0 < payment.value;
+    const valueColor = isIncome ? "blue" : "red";
     return (
       <tr key={payment.id}>
         <td>
@@ -42,7 +43,7 @@ const App: FC = () => {
           <Text>{payment.category}</Text>
         </td>
         <td>
-          <Text color={valueColor}>{Math.abs(payment.value).toString()}</Text>
+          <Text color={valueColor}>{payment.value.toString()}</Text>
         </td>
         <td>
           <Text>{formatDateTime(payment.payDate, "YYYY年MM月DD日")}</Text>
