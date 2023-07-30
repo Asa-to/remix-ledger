@@ -77,7 +77,7 @@ const App: FC = () => {
           );
         })}
       </Box>
-      <Button component={Link} to="create">
+      <Button component={Link} to="/payment/create">
         収支入力
       </Button>
     </Stack>
