@@ -1,14 +1,15 @@
 import { type FC } from "react";
-import { Button, Text, Stack, useMantineTheme, Box } from "@mantine/core";
+import { Button, Text, Stack, Box, Group } from "@mantine/core";
 import { getPaymentByDateRange } from "~/models/payment.server";
 import { getAllUsers } from "~/models/user.server";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
 import { formatDateTime } from "~/utils/date/formatDateTime";
-import { Link } from "@remix-run/react";
+import { Link, useLocation } from "@remix-run/react";
 import type { LoaderArgs } from "@remix-run/node";
 import { getFirstDayOfMonth } from "~/utils/date/getFirstDayOfMonth";
 import { getLastDayOfMonth } from "~/utils/date/getLastDataOfMonth";
 import { PaymentCard } from "~/components/PaymentCard";
+import { getDateByMonthDifference } from "~/utils/date/getDatebyMonthDifference";
 
 export const loader = async ({ params }: LoaderArgs) => {
   const date = params.date ? new Date(params.date) : new Date();
@@ -22,10 +23,10 @@ export const loader = async ({ params }: LoaderArgs) => {
 
 const App: FC = () => {
   const { payments, users } = useTypedLoaderData<typeof loader>();
-
-  if (payments.length === 0) {
-    return <Text>この月はデータがありません</Text>;
-  }
+  const pathName = useLocation().pathname.split("/").pop();
+  const date = new Date(pathName ?? "")?.getTime()
+    ? new Date(pathName ?? "")
+    : payments?.[0]?.payDate || new Date();
 
   const total = payments
     .reduce((total, curVal) => total + curVal.value, 0)
@@ -33,7 +34,23 @@ const App: FC = () => {
 
   let curDate: null | number = null;
   return (
-    <Stack spacing={0}>
+    <Stack spacing={4}>
+      <Group>
+        <Button
+          component={Link}
+          to={`/payment/${getDateByMonthDifference(date, -1).toISOString()}`}
+          variant="subtle"
+        >
+          ＜ {getDateByMonthDifference(date, -1).getMonth() + 1}月
+        </Button>
+        <Button
+          component={Link}
+          to={`/payment/${getDateByMonthDifference(date, 1).toISOString()}`}
+          variant="subtle"
+        >
+          {getDateByMonthDifference(date, 1).getMonth() + 1}月 ＞
+        </Button>
+      </Group>
       <Box>
         {payments.map((item) => {
           const showDate = curDate !== item.payDate.getDate();
