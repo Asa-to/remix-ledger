@@ -5,7 +5,7 @@ import { typedjson, useTypedLoaderData } from "remix-typedjson";
 import { LabelValueItem } from "~/components/LabelValueItem";
 import { getPayment } from "~/models/payment.server";
 import { getUser } from "~/models/user.server";
-import { formatDateTime } from "~/utils/date/format";
+import { formatDateTime } from "~/utils/date/formatDateTime";
 
 export const loader = async ({ params }: LoaderArgs) => {
   const payment = await getPayment(params.paymentId as string);

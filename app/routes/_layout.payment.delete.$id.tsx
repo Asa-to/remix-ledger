@@ -4,7 +4,7 @@ import { Form, Link } from "@remix-run/react";
 import { redirect, typedjson, useTypedLoaderData } from "remix-typedjson";
 import { LabelValueItem } from "~/components/LabelValueItem";
 import { deletePayment, getPayment } from "~/models/payment.server";
-import { formatDateTime } from "~/utils/date/format";
+import { formatDateTime } from "~/utils/date/formatDateTime";
 
 export const loader = async ({ params }: LoaderArgs) => {
   const { id } = params;
@@ -14,7 +14,6 @@ export const loader = async ({ params }: LoaderArgs) => {
 
 export const action = async ({ request }: ActionArgs) => {
   const id = (await request.formData()).get("id") as string;
-  console.log(`id: ${id}`);
   await deletePayment(id);
 
   return redirect("/payment");
