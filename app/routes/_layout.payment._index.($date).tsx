@@ -38,14 +38,20 @@ const App: FC = () => {
       <Group>
         <Button
           component={Link}
-          to={`/payment/${getDateByMonthDifference(date, -1).toISOString()}`}
+          to={`/payment/${formatDateTime(
+            getDateByMonthDifference(date, -1),
+            "YYYY-MM-DD"
+          )}`}
           variant="subtle"
         >
           ＜ {getDateByMonthDifference(date, -1).getMonth() + 1}月
         </Button>
         <Button
           component={Link}
-          to={`/payment/${getDateByMonthDifference(date, 1).toISOString()}`}
+          to={`/payment/${formatDateTime(
+            getDateByMonthDifference(date, 1),
+            "YYYY-MM-DD"
+          )}`}
           variant="subtle"
         >
           {getDateByMonthDifference(date, 1).getMonth() + 1}月 ＞
