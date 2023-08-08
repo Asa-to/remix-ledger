@@ -31,10 +31,47 @@ const App: FC = () => {
   const total = payments
     .reduce((total, curVal) => total + curVal.value, 0)
     .toLocaleString();
+  const totalExpense = payments
+    .filter((item) => item.value < 0)
+    .reduce((total, curVal) => total + curVal.value, 0);
+  const halfExpense = totalExpense / 2;
 
   let curDate: null | number = null;
+
   return (
     <Stack spacing={4}>
+      <Box sx={{ display: "grid", gridTemplateColumns: "120px 1fr" }}>
+        <Text>{date.getMonth() + 1}月総資産</Text>
+        <Text>{total}</Text>
+      </Box>
+      <Stack spacing={0}>
+        {users.map((user) => {
+          const usersData = payments.filter((item) => item.userId === user.id);
+          const userTotalExpense = usersData
+            .filter((item) => item.value < 0)
+            .reduce((total, item) => total + item.value, 0);
+          const userTotalIncome = usersData
+            .filter((item) => 0 < item.value)
+            .reduce((total, item) => total + item.value, 0);
+          const calcResult = halfExpense - userTotalExpense - userTotalIncome;
+          return (
+            <Box
+              sx={{ display: "grid", gridTemplateColumns: "120px 80px 1fr" }}
+              key={user.id}
+            >
+              <Text>{user.name}</Text>
+              <Text>{calcResult.toLocaleString()}</Text>
+              <Text>
+                {calcResult === 0
+                  ? ""
+                  : 0 < calcResult
+                  ? "円受け取る"
+                  : "円渡す"}
+              </Text>
+            </Box>
+          );
+        })}
+      </Stack>
       <Group>
         <Button
           component={Link}
