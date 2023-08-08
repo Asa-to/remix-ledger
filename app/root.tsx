@@ -17,6 +17,10 @@ export const links: LinksFunction = () => [
     rel: "stylesheet",
     href: styles,
   },
+  {
+    rel: "manifest",
+    href: "/manifest.json",
+  },
 ];
 
 export default function App() {
