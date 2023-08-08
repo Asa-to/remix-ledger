@@ -1,5 +1,5 @@
 import { type FC } from "react";
-import { Button, Text, Stack, Box, Group } from "@mantine/core";
+import { Button, Text, Stack, Box, Group, Title } from "@mantine/core";
 import { getPaymentByDateRange } from "~/models/payment.server";
 import { getAllUsers } from "~/models/user.server";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
@@ -46,6 +46,7 @@ const App: FC = () => {
         >
           ＜ {getDateByMonthDifference(date, -1).getMonth() + 1}月
         </Button>
+        <Title size="h4">{date.getMonth() + 1}月</Title>
         <Button
           component={Link}
           to={`/payment/${formatDateTime(

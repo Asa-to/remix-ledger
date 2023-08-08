@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import type { ActionArgs } from "@remix-run/node";
-import { Form, Link } from "@remix-run/react";
+import { Form, Link, useNavigate } from "@remix-run/react";
 import {
   getCategories,
   getPayment,
@@ -58,6 +58,8 @@ export const PaymentCreate = () => {
   const [categories, setCategories] = useState<typeof baseCategories>(
     Array.from(new Set(baseCategories))
   );
+  const navigate = useNavigate();
+  const goBack = () => navigate(-1);
 
   return (
     <Form method="POST">
@@ -120,9 +122,7 @@ export const PaymentCreate = () => {
         />
         <TextInput label="備考" name="remarks" />
         <Stack sx={{ flexDirection: "row" }}>
-          <Button component={Link} to={"/payment"}>
-            戻る
-          </Button>
+          <Button onClick={goBack}>戻る</Button>
           <Button type="submit">更新</Button>
         </Stack>
       </Stack>

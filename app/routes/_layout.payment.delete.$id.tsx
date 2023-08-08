@@ -1,6 +1,6 @@
 import { Button, Group, Stack, Title } from "@mantine/core";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
-import { Form, Link } from "@remix-run/react";
+import { Form, Link, useNavigate } from "@remix-run/react";
 import { redirect, typedjson, useTypedLoaderData } from "remix-typedjson";
 import { LabelValueItem } from "~/components/LabelValueItem";
 import { deletePayment, getPayment } from "~/models/payment.server";
@@ -21,14 +21,14 @@ export const action = async ({ request }: ActionArgs) => {
 
 const PaymentDelete = () => {
   const { payment } = useTypedLoaderData<typeof loader>();
+  const navigate = useNavigate();
+  const goBack = () => navigate(-1);
 
   if (!payment) {
     return (
       <Stack>
         <Title order={4}>データが正常に取得できませんでした</Title>
-        <Button component={Link} to="/payment">
-          戻る
-        </Button>
+        <Button onClick={goBack}>戻る</Button>
       </Stack>
     );
   }
@@ -45,7 +45,7 @@ const PaymentDelete = () => {
       <Form method="POST">
         <input name="id" defaultValue={payment.id} hidden />
         <Group spacing={8}>
-          <Button variant="outline" component={Link} to="/payment">
+          <Button variant="outline" onClick={goBack}>
             戻る
           </Button>
           <Button type="submit" color="orange">

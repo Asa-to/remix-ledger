@@ -24,7 +24,7 @@ export const PaymentCard = (props: Props) => {
           <Button
             variant="subtle"
             component={Link}
-            to={`edit/${payment.id}`}
+            to={`/payment/edit/${payment.id}`}
             p={0}
             sx={{ height: "fit-content" }}
           >
@@ -36,7 +36,7 @@ export const PaymentCard = (props: Props) => {
           <Button
             p={0}
             component={Link}
-            to={`delete/${payment.id}`}
+            to={`/payment/delete/${payment.id}`}
             variant="subtle"
             sx={{ height: "fit-content" }}
           >
