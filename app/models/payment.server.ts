@@ -25,6 +25,11 @@ export const getPayment = async (id: string) => {
  */
 export const getPaymentByDateRange = async (start: Date, end: Date) => {
   return prisma.payment.findMany({
+    orderBy: [
+      {
+        payDate: "desc",
+      },
+    ],
     where: {
       payDate: {
         gte: start,
