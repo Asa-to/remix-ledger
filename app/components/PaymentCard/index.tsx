@@ -1,6 +1,6 @@
 import { Button, Flex, Text, Stack, Box } from "@mantine/core";
 import type { Payment, User } from "@prisma/client";
-import { Link } from "@remix-run/react";
+import { Link, useLocation } from "@remix-run/react";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 
 type Props = {
@@ -11,6 +11,9 @@ type Props = {
 export const PaymentCard = (props: Props) => {
   const { payment, users } = props;
   const isIncome = 0 <= payment.value;
+  const location = useLocation();
+  const pathname = location.pathname;
+  const search = location.search;
 
   return (
     <Stack spacing={0}>
@@ -27,6 +30,7 @@ export const PaymentCard = (props: Props) => {
             to={`/payment/edit/${payment.id}`}
             p={0}
             sx={{ height: "fit-content" }}
+            state={{ from: pathname + search }}
           >
             <Flex direction="row" align="center" gap="4px">
               <AiOutlineEdit />
@@ -39,6 +43,7 @@ export const PaymentCard = (props: Props) => {
             to={`/payment/delete/${payment.id}`}
             variant="subtle"
             sx={{ height: "fit-content" }}
+            state={{ from: pathname + search }}
           >
             <Flex direction="row" align="center" gap="4px">
               <AiOutlineDelete />

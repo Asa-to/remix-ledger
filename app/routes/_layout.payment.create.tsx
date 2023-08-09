@@ -2,6 +2,7 @@ import {
   Button,
   Grid,
   Group,
+  LoadingOverlay,
   Radio,
   Select,
   Stack,
@@ -9,12 +10,13 @@ import {
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import type { ActionArgs } from "@remix-run/node";
-import { Form, Link } from "@remix-run/react";
+import { Form, useLocation, useNavigate } from "@remix-run/react";
 import { createPayment, getCategories } from "~/models/payment.server";
 import type { LoaderArgs } from "@remix-run/node";
 import { redirect, typedjson, useTypedLoaderData } from "remix-typedjson";
 import { getAllUsers } from "~/models/user.server";
 import { useState } from "react";
+import { useDisclosure } from "@mantine/hooks";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const categories = (await getCategories()).map((item) => item.category);
@@ -24,6 +26,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export const action = async ({ request }: ActionArgs) => {
   const body = await request.formData();
+  const redirectTo = body.get("redirectTo")?.toString();
 
   await createPayment({
     payDate: body.get("payDate") as string,
@@ -33,7 +36,9 @@ export const action = async ({ request }: ActionArgs) => {
     remarks: body.get("remarks") as string,
   });
 
-  return redirect("/payment");
+  if (redirectTo) {
+    return redirect(redirectTo);
+  }
 };
 
 export const PaymentCreate = () => {
@@ -46,10 +51,17 @@ export const PaymentCreate = () => {
   const [categories, setCategories] = useState<typeof baseCategories>(
     Array.from(new Set(baseCategories))
   );
+  const [visible, { toggle }] = useDisclosure(false);
+  const navigate = useNavigate();
+  const goBack = () => navigate(-1);
+  const location = useLocation();
+  const redirectTo = location.state?.from ?? "/payment";
 
   return (
     <Form method="POST">
+      <LoadingOverlay visible={visible} overlayBlur={2} />
       <Stack spacing={8}>
+        <input name="redirectTo" defaultValue={redirectTo} hidden />
         <DateInput
           label="支払日"
           name="payDate"
@@ -104,10 +116,10 @@ export const PaymentCreate = () => {
         />
         <TextInput label="備考" name="remarks" />
         <Stack sx={{ flexDirection: "row" }}>
-          <Button component={Link} to={"/payment"}>
-            戻る
+          <Button onClick={goBack}>戻る</Button>
+          <Button type="submit" onClick={toggle}>
+            決定
           </Button>
-          <Button type="submit">決定</Button>
         </Stack>
       </Stack>
     </Form>

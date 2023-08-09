@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import type { ActionArgs } from "@remix-run/node";
-import { Form, Link, useNavigate } from "@remix-run/react";
+import { Form, useLocation, useNavigate } from "@remix-run/react";
 import {
   getCategories,
   getPayment,
@@ -33,6 +33,7 @@ export const loader = async ({ params }: LoaderArgs) => {
 
 export const action = async ({ request }: ActionArgs) => {
   const body = await request.formData();
+  const redirectTo = body.get("redirectTo")?.toString();
 
   await updatePayment(body.get("id") as string, {
     payDate: body.get("payDate") as string,
@@ -42,7 +43,9 @@ export const action = async ({ request }: ActionArgs) => {
     remarks: body.get("remarks") as string,
   });
 
-  return redirect("/payment");
+  if (redirectTo) {
+    return redirect(redirectTo);
+  }
 };
 
 export const PaymentCreate = () => {
@@ -60,10 +63,13 @@ export const PaymentCreate = () => {
   );
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
+  const location = useLocation();
+  const redirectTo = location.state?.from ?? "/payment";
 
   return (
     <Form method="POST">
       <Stack spacing={8}>
+        <input name="redirectTo" defaultValue={redirectTo} hidden />
         <Input display="none" name="id" defaultValue={payment.id} />
         <DateInput
           label="支払日"
@@ -120,7 +126,11 @@ export const PaymentCreate = () => {
           pattern="^[0-9]+$"
           defaultValue={Math.abs(payment.value).toString()}
         />
-        <TextInput label="備考" name="remarks" />
+        <TextInput
+          label="備考"
+          name="remarks"
+          defaultValue={payment.remarks?.toString()}
+        />
         <Stack sx={{ flexDirection: "row" }}>
           <Button onClick={goBack}>戻る</Button>
           <Button type="submit">更新</Button>

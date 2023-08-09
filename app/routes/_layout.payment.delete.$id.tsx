@@ -1,6 +1,6 @@
 import { Button, Group, Stack, Title } from "@mantine/core";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
-import { Form, Link, useNavigate } from "@remix-run/react";
+import { Form, useLocation, useNavigate } from "@remix-run/react";
 import { redirect, typedjson, useTypedLoaderData } from "remix-typedjson";
 import { LabelValueItem } from "~/components/LabelValueItem";
 import { deletePayment, getPayment } from "~/models/payment.server";
@@ -13,16 +13,22 @@ export const loader = async ({ params }: LoaderArgs) => {
 };
 
 export const action = async ({ request }: ActionArgs) => {
-  const id = (await request.formData()).get("id") as string;
+  const formData = await request.formData();
+  const id = formData.get("id") as string;
+  const redirectTo = formData.get("redirectTo")?.toString();
   await deletePayment(id);
 
-  return redirect("/payment");
+  if (redirectTo) {
+    return redirect(redirectTo);
+  }
 };
 
 const PaymentDelete = () => {
   const { payment } = useTypedLoaderData<typeof loader>();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
+  const location = useLocation();
+  const redirectTo = location.state?.from ?? "/payment";
 
   if (!payment) {
     return (
@@ -44,6 +50,7 @@ const PaymentDelete = () => {
       <LabelValueItem label="カテゴリー" value={payment.category} />
       <Form method="POST">
         <input name="id" defaultValue={payment.id} hidden />
+        <input name="redirectTo" defaultValue={redirectTo} hidden />
         <Group spacing={8}>
           <Button variant="outline" onClick={goBack}>
             戻る
