@@ -27,6 +27,9 @@ const App: FC = () => {
   const date = new Date(pathName ?? "")?.getTime()
     ? new Date(pathName ?? "")
     : payments?.[0]?.payDate || new Date();
+  const location = useLocation();
+  const pathname = location.pathname;
+  const search = location.search;
 
   const total = payments
     .reduce((total, curVal) => total + curVal.value, 0)
@@ -115,7 +118,11 @@ const App: FC = () => {
           );
         })}
       </Box>
-      <Button component={Link} to="/payment/create">
+      <Button
+        component={Link}
+        to="/payment/create"
+        state={{ from: pathname + search }}
+      >
         収支入力
       </Button>
     </Stack>
