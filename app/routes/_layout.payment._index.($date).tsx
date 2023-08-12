@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { Fragment, type FC } from "react";
 import { Button, Text, Stack, Box, Group, Title } from "@mantine/core";
 import { getPaymentByDateRange } from "~/models/payment.server";
 import { getAllUsers } from "~/models/user.server";
@@ -31,50 +31,37 @@ const App: FC = () => {
   const pathname = location.pathname;
   const search = location.search;
 
-  const total = payments
-    .reduce((total, curVal) => total + curVal.value, 0)
-    .toLocaleString();
-  const totalExpense = payments
-    .filter((item) => item.value < 0)
-    .reduce((total, curVal) => total + curVal.value, 0);
-  const halfExpense = totalExpense / 2;
+  const totalExpenseAbs = Math.abs(
+    payments
+      .filter((item) => item.value < 0)
+      .reduce((total, curVal) => total + curVal.value, 0)
+  );
+  const halfExpense = totalExpenseAbs / 2;
 
   let curDate: null | number = null;
 
   return (
     <Stack spacing={4}>
-      <Box sx={{ display: "grid", gridTemplateColumns: "120px 1fr" }}>
-        <Text>{date.getMonth() + 1}月総資産</Text>
-        <Text>{total}</Text>
-      </Box>
-      <Stack spacing={0}>
+      <Box sx={{ display: "grid", gridTemplateColumns: "120px 80px 1fr" }}>
+        <Text>{date.getMonth() + 1}月総出費</Text>
+        <Text>{totalExpenseAbs}</Text>
+        <Text>円</Text>
         {users.map((user) => {
           const usersData = payments.filter((item) => item.userId === user.id);
-          const userTotalExpense = usersData
-            .filter((item) => item.value < 0)
-            .reduce((total, item) => total + item.value, 0);
-          const userTotalIncome = usersData
-            .filter((item) => 0 < item.value)
-            .reduce((total, item) => total + item.value, 0);
-          const calcResult = halfExpense - userTotalExpense - userTotalIncome;
+          const userTotalExpenseAbs = Math.abs(
+            usersData.reduce((total, item) => total + Math.abs(item.value), 0)
+          );
+          const calcResult = halfExpense - userTotalExpenseAbs;
+          const isPayOver = calcResult < 0;
           return (
-            <Box
-              sx={{ display: "grid", gridTemplateColumns: "120px 80px 1fr" }}
-              key={user.id}
-            >
+            <Fragment key={user.id}>
               <Text>{user.name}</Text>
-              <Text>{calcResult.toLocaleString()}</Text>
-              <Text>
-                {calcResult === 0
-                  ? ""
-                  : 0 < calcResult
-                  ? "円受け取る"
-                  : "円渡す"}
-              </Text>
-            </Box>
+              <Text>{Math.abs(calcResult).toLocaleString()}</Text>
+              <Text>{isPayOver ? "円受け取る" : "円渡す"}</Text>
+            </Fragment>
           );
         })}
-      </Stack>
+      </Box>
       <Group>
         <Button
           component={Link}
@@ -102,6 +89,13 @@ const App: FC = () => {
         {payments.map((item) => {
           const showDate = curDate !== item.payDate.getDate();
           curDate = item.payDate.getDate();
+          const dateSum = Math.abs(
+            payments
+              .filter(
+                (item) => item.value < 0 && item.payDate.getDate() === curDate
+              )
+              .reduce((pre, cur) => pre + cur.value, 0)
+          );
           return (
             <Stack
               key={item.id}
@@ -109,9 +103,10 @@ const App: FC = () => {
               sx={{ borderTop: !showDate ? "1px solid" : undefined }}
             >
               {showDate && (
-                <Text bg="gray">
-                  {formatDateTime(item.payDate, "YYYY年MM月DD日")}
-                </Text>
+                <Group bg="gray" sx={{ justifyContent: "space-between" }}>
+                  <Text>{formatDateTime(item.payDate, "YYYY年MM月DD日")}</Text>
+                  <Text>{dateSum}円</Text>
+                </Group>
               )}
               <PaymentCard payment={item} users={users} />
             </Stack>
