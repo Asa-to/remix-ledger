@@ -17,11 +17,14 @@ import { redirect, typedjson, useTypedLoaderData } from "remix-typedjson";
 import { getAllUsers } from "~/models/user.server";
 import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
+import { userIdCookie } from "~/cookie.server";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const categories = (await getCategories()).map((item) => item.category);
   const users = await getAllUsers();
-  return typedjson({ categories, users });
+  const cookieHeader = request.headers.get("Cookie");
+  const userId = await userIdCookie.parse(cookieHeader);
+  return typedjson({ categories, users, myUserId: userId.userId });
 };
 
 export const action = async ({ request }: ActionArgs) => {
@@ -36,14 +39,25 @@ export const action = async ({ request }: ActionArgs) => {
     remarks: body.get("remarks") as string,
   });
 
+  const userId = body.get("userId")?.toString();
+
   if (redirectTo) {
-    return redirect(redirectTo);
+    return redirect(redirectTo, {
+      headers: {
+        "Set-Cookie": await userIdCookie.serialize({
+          userId,
+        }),
+      },
+    });
   }
 };
 
 export const PaymentCreate = () => {
-  const { categories: baseCategories, users } =
-    useTypedLoaderData<typeof loader>();
+  const {
+    categories: baseCategories,
+    users,
+    myUserId,
+  } = useTypedLoaderData<typeof loader>();
   const usersForSelect = users.map((item) => ({
     label: item.name,
     value: item.id,
@@ -68,6 +82,13 @@ export const PaymentCreate = () => {
           valueFormat="YYYY年MM月DD日"
           required
           defaultValue={new Date()}
+        />
+        <Select
+          name="userId"
+          data={usersForSelect}
+          label="ユーザー"
+          defaultValue={myUserId ?? usersForSelect[0].value}
+          required
         />
         <Grid>
           <Grid.Col span="auto">
@@ -100,13 +121,6 @@ export const PaymentCreate = () => {
             </Radio.Group>
           </Grid.Col>
         </Grid>
-        <Select
-          name="userId"
-          data={usersForSelect}
-          label="ユーザー"
-          defaultValue={usersForSelect[0].value}
-          required
-        />
         <TextInput
           label="収支"
           type="text"
