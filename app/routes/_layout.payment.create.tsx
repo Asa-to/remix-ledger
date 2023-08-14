@@ -24,7 +24,11 @@ export const loader = async ({ request }: LoaderArgs) => {
   const users = await getAllUsers();
   const cookieHeader = request.headers.get("Cookie");
   const userId = await userIdCookie.parse(cookieHeader);
-  return typedjson({ categories, users, myUserId: userId.userId });
+  return typedjson({
+    categories,
+    users,
+    myUserId: userId?.userId as string | undefined,
+  });
 };
 
 export const action = async ({ request }: ActionArgs) => {
