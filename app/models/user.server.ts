@@ -11,3 +11,7 @@ export const getAllUsers = async () => {
 export const getUser = async (id: string) => {
   return prisma.user.findFirst({ where: { id } });
 };
+
+export const deleteUser = async (id: string) => {
+  return prisma.user.delete({ where: { id } });
+};
