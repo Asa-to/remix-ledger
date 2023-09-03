@@ -1,5 +1,5 @@
-import { Fragment, type FC } from "react";
-import { Button, Text, Stack, Box, Group, Title } from "@mantine/core";
+import { Fragment, type FC, useState } from "react";
+import { Button, Text, Stack, Box, Group, Title, Select } from "@mantine/core";
 import { getPaymentByDateRange } from "~/models/payment.server";
 import { getAllUsers } from "~/models/user.server";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
@@ -31,27 +31,45 @@ const App: FC = () => {
   const pathname = location.pathname;
   const search = location.search;
 
-  const totalExpenseAbs = Math.abs(
+  const totalExpense = Math.abs(
     payments
       .filter((item) => item.value < 0)
       .reduce((total, curVal) => total + curVal.value, 0)
   );
-  const halfExpense = totalExpenseAbs / 2;
+  const halfExpense = totalExpense / 2;
+
+  const categories = Array.from(new Set(payments.map((item) => item.category)));
+  const [curCategory, setCurCategory] = useState<string | null>(categories[0]);
+  const curCategorySum = payments
+    .filter((item) => item.category === curCategory)
+    .reduce((pre, cur) => pre + cur.value, 0);
 
   let curDate: null | number = null;
 
   return (
     <Stack spacing={4}>
-      <Box sx={{ display: "grid", gridTemplateColumns: "120px 80px 1fr" }}>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "120px 80px 1fr",
+          gap: "8px",
+          alignItems: "center",
+        }}
+      >
         <Text>{date.getMonth() + 1}月総出費</Text>
-        <Text>{totalExpenseAbs}</Text>
+        <Text>{Math.abs(totalExpense).toLocaleString()}</Text>
         <Text>円</Text>
         {users.map((user) => {
-          const usersData = payments.filter((item) => item.userId === user.id);
-          const userTotalExpenseAbs = Math.abs(
-            usersData.reduce((total, item) => total + Math.abs(item.value), 0)
+          const userData = payments.filter((item) => item.userId === user.id);
+          const userTotalExpense = Math.abs(
+            userData
+              .filter((item) => item.value < 0)
+              .reduce((total, item) => total + Math.abs(item.value), 0)
           );
-          const calcResult = halfExpense - userTotalExpenseAbs;
+          const userTotalIncome = userData
+            .filter((item) => 0 < item.value)
+            .reduce((pre, cur) => pre + cur.value, 0);
+          const calcResult = halfExpense - userTotalExpense - userTotalIncome;
           const isPayOver = calcResult < 0;
           return (
             <Fragment key={user.id}>
@@ -61,6 +79,13 @@ const App: FC = () => {
             </Fragment>
           );
         })}
+        <Select
+          value={curCategory}
+          data={categories}
+          onChange={setCurCategory}
+        />
+        <Text>{Math.abs(curCategorySum)}</Text>
+        <Text>円</Text>
       </Box>
       <Group>
         <Button
@@ -117,6 +142,7 @@ const App: FC = () => {
         component={Link}
         to="/payment/create"
         state={{ from: pathname + search }}
+        variant="gradient"
       >
         収支入力
       </Button>

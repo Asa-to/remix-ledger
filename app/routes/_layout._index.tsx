@@ -1,18 +1,5 @@
-import { Button, Stack } from "@mantine/core";
-import { Link } from "@remix-run/react";
-import type { FC } from "react";
+import { redirect } from "remix-typedjson";
 
-const App: FC = () => {
-  return (
-    <Stack>
-      <Button component={Link} to="/payment">
-        入出金へ
-      </Button>
-      <Button component={Link} to="/user">
-        ユーザー管理へ
-      </Button>
-    </Stack>
-  );
+export const loader = async () => {
+  return redirect("/payment");
 };
-
-export default App;

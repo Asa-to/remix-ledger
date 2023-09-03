@@ -13,9 +13,6 @@ export const NavbarContent: FC<Props> = (props) => {
       <Button component={Link} to="/payment" onClick={onClick}>
         入出金
       </Button>
-      <Button component={Link} to="/user" onClick={onClick}>
-        ユーザー
-      </Button>
     </Stack>
   );
 };
