@@ -6,7 +6,6 @@ import {
   Radio,
   Select,
   Stack,
-  Text,
   TextInput,
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
@@ -66,11 +65,9 @@ export const PaymentCreate = () => {
   const goBack = () => navigate(-1);
   const location = useLocation();
   const redirectTo = location.state?.from ?? "/payment";
-  const d = new Date().getTime();
 
   return (
     <Form method="POST">
-      <Text>{d}</Text>
       <Stack spacing={8}>
         <input name="redirectTo" defaultValue={redirectTo} hidden />
         <Input display="none" name="id" defaultValue={payment.id} />
