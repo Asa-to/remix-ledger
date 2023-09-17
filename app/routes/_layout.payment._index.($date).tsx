@@ -10,10 +10,9 @@ import { getFirstDayOfMonth } from "~/utils/date/getFirstDayOfMonth";
 import { getLastDayOfMonth } from "~/utils/date/getLastDataOfMonth";
 import { PaymentCard } from "~/components/PaymentCard";
 import { getDateByMonthDifference } from "~/utils/date/getDatebyMonthDifference";
-import { getNow } from "~/utils/date/date";
 
 export const loader = async ({ params }: LoaderArgs) => {
-  const date = params.date ? new Date(params.date) : getNow();
+  const date = params.date ? new Date(params.date) : new Date();
   const payments = await getPaymentByDateRange(
     getFirstDayOfMonth(date),
     getLastDayOfMonth(date)
@@ -27,7 +26,7 @@ const App: FC = () => {
   const pathName = useLocation().pathname.split("/").pop();
   const date = new Date(pathName ?? "")?.getTime()
     ? new Date(pathName ?? "")
-    : payments?.[0]?.payDate || getNow();
+    : payments?.[0]?.payDate || new Date();
   console.log(date);
   const location = useLocation();
   const pathname = location.pathname;

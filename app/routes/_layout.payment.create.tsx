@@ -18,7 +18,6 @@ import { getAllUsers } from "~/models/user.server";
 import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { userIdCookie } from "~/cookie.server";
-import { getNow } from "~/utils/date/date";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const categories = (await getCategories()).map((item) => item.category);
@@ -86,7 +85,7 @@ export const PaymentCreate = () => {
           name="payDate"
           valueFormat="YYYY年MM月DD日"
           required
-          defaultValue={getNow()}
+          defaultValue={new Date()}
         />
         <Select
           name="userId"
