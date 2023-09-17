@@ -2,7 +2,7 @@
   "private": true,
   "sideEffects": false,
   "scripts": {
-    "build": "prisma generate && remix build",
+    "build": "TZ='Asia/Tokyo' && prisma generate && remix build",
     "dev": "remix dev",
     "typecheck": "tsc"
   },
