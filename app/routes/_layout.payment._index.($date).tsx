@@ -31,6 +31,7 @@ const App: FC = () => {
   const location = useLocation();
   const pathname = location.pathname;
   const search = location.search;
+  console.log(getNow());
 
   const totalExpense = Math.abs(
     payments
