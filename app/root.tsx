@@ -9,9 +9,6 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
 import styles from "~/styles/global.css";
 
 export const links: LinksFunction = () => [
@@ -25,11 +22,6 @@ export const links: LinksFunction = () => [
     href: "/manifest.json",
   },
 ];
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
-
-dayjs.tz.setDefault("Asia/Tokyo");
 
 export default function App() {
   return (
