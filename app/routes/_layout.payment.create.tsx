@@ -18,7 +18,7 @@ import { getAllUsers } from "~/models/user.server";
 import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { userIdCookie } from "~/cookie.server";
-import { getNow } from "~/utils/date/date";
+import { getNow } from "~/utils/date/getNow";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const categories = (await getCategories()).map((item) => item.category);

@@ -10,7 +10,7 @@ import { getFirstDayOfMonth } from "~/utils/date/getFirstDayOfMonth";
 import { getLastDayOfMonth } from "~/utils/date/getLastDataOfMonth";
 import { PaymentCard } from "~/components/PaymentCard";
 import { getDateByMonthDifference } from "~/utils/date/getDatebyMonthDifference";
-import { getNow } from "~/utils/date/date";
+import { getNow } from "~/utils/date/getNow";
 
 export const loader = async ({ params }: LoaderArgs) => {
   const date = params.date ? new Date(params.date) : getNow();
