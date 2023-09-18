@@ -28,7 +28,6 @@ const App: FC = () => {
   const date = new Date(pathName ?? "")?.getTime()
     ? new Date(pathName ?? "")
     : payments?.[0]?.payDate || getNow();
-  console.log(date);
   const location = useLocation();
   const pathname = location.pathname;
   const search = location.search;
