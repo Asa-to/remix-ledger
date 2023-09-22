@@ -9,6 +9,5 @@ dayjs.extend(timezone);
  * @returns date
  */
 export const getNow = () => {
-  return new Date(1694956852429);
   return dayjs(new Date()).tz("Asia/Tokyo").toDate();
 };
