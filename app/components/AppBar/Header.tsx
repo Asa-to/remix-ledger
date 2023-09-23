@@ -1,4 +1,4 @@
-import { Flex, Title } from "@mantine/core";
+import { Box, Flex, Title } from "@mantine/core";
 import { Link } from "@remix-run/react";
 import type { FC, ReactNode } from "react";
 
@@ -10,11 +10,19 @@ type Props = {
 export const HeaderContent: FC<Props> = (props) => {
   const { children, title } = props;
   return (
-    <Flex justify="space-between" direction="row">
-      <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-        <Title>{title}</Title>
-      </Link>
-      {children}
-    </Flex>
+    <Box
+      display="grid"
+      px="8px"
+      sx={{ height: "100%", gridTemplateColumns: "1fr 1fr" }}
+    >
+      <Box my="auto">
+        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+          <Title>{title}</Title>
+        </Link>
+      </Box>
+      <Flex direction="row" align="center" justify="right" gap="16px">
+        {children}
+      </Flex>
+    </Box>
   );
 };
