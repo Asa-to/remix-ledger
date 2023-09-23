@@ -20,6 +20,8 @@ import { getLastDayOfMonth } from "~/utils/date/getLastDataOfMonth";
 import { PaymentCard } from "~/components/PaymentCard";
 import { getDateByMonthDifference } from "~/utils/date/getDatebyMonthDifference";
 import { getNow } from "~/utils/date/getNow";
+import { generateCSV } from "~/utils/csv/generateCSV";
+import type { Payment } from "@prisma/client";
 
 export const loader = async ({ params }: LoaderArgs) => {
   const date = params.date ? new Date(params.date) : getNow();
@@ -134,7 +136,13 @@ const App: FC = () => {
           </Button>
         </Group>
         <Button variant="outline" size="xs">
-          CSV export
+          <Link
+            to={encodeURI(generateCSV<Payment[]>(payments))}
+            style={{ textDecoration: "none" }}
+            download={formatDateTime(date, "YYYY年MM月")}
+          >
+            CSV export
+          </Link>
         </Button>
       </Flex>
       <Box>
