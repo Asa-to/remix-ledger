@@ -30,6 +30,8 @@ export const AppBar: FC<Props> = (props) => {
       </Drawer>
       <Header
         height="60px"
+        maw="765px"
+        mx="auto"
         sx={{
           position: "fixed",
           boxSizing: "border-box",
