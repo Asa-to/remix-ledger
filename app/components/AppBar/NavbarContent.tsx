@@ -9,7 +9,7 @@ type Props = {
 export const NavbarContent: FC<Props> = (props) => {
   const { onClick } = props;
   return (
-    <Stack spacing="8px">
+    <Stack spacing="8px" mt="60px">
       <Button component={Link} to="/payment" onClick={onClick}>
         入出金
       </Button>

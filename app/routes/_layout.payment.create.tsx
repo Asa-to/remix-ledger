@@ -42,6 +42,7 @@ export const action = async ({ request }: ActionArgs) => {
     value: Number(body.get("value")) * (body.get("type") === "1" ? 1 : -1),
     userId: body.get("userId") as string,
     remarks: body.get("remarks") as string,
+    payPer: Number(body.get("payPer")),
   });
 
   const userId = body.get("userId")?.toString();
@@ -77,7 +78,7 @@ export const PaymentCreate = () => {
   const redirectTo = location.state?.from ?? "/payment";
 
   return (
-    <Form method="POST">
+    <Form method="POST" onSubmit={toggle}>
       <LoadingOverlay visible={visible} overlayBlur={2} />
       <Stack spacing={8}>
         <input name="redirectTo" defaultValue={redirectTo} hidden />
@@ -133,12 +134,18 @@ export const PaymentCreate = () => {
           required
           pattern="^[0-9]+$"
         />
+        <TextInput
+          label="支払い者の負担割合（％）"
+          type="text"
+          name="payPer"
+          defaultValue={50}
+          required
+          pattern="^[0-9]{2}|100"
+        />
         <TextInput label="備考" name="remarks" />
         <Stack sx={{ flexDirection: "row" }}>
           <Button onClick={goBack}>戻る</Button>
-          <Button type="submit" onClick={toggle}>
-            決定
-          </Button>
+          <Button type="submit">決定</Button>
         </Stack>
       </Stack>
     </Form>

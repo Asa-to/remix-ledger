@@ -41,6 +41,7 @@ export const action = async ({ request }: ActionArgs) => {
     value: Number(body.get("value")) * (body.get("type") === "1" ? 1 : -1),
     userId: body.get("userId") as string,
     remarks: body.get("remarks") as string,
+    payPer: Number(body.get("payPer")),
   });
 
   if (redirectTo) {
@@ -125,6 +126,14 @@ export const PaymentCreate = () => {
           required
           pattern="^[0-9]+$"
           defaultValue={Math.abs(payment.value).toString()}
+        />
+        <TextInput
+          label="支払い者の負担割合（％）"
+          type="text"
+          name="payPer"
+          defaultValue={50}
+          required
+          pattern="^[0-9]{2}|100"
         />
         <TextInput
           label="備考"
