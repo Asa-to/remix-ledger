@@ -18,7 +18,7 @@ export const AppBar: FC<Props> = (props) => {
   const search = location.search;
 
   return (
-    <Box>
+    <Box mih="100vh">
       <Drawer
         opened={opened}
         onClose={() => setOpened(false)}
@@ -30,7 +30,12 @@ export const AppBar: FC<Props> = (props) => {
       </Drawer>
       <Header
         height="60px"
-        sx={{ position: "fixed", boxSizing: "border-box", border: "none" }}
+        sx={{
+          position: "fixed",
+          boxSizing: "border-box",
+          border: "none",
+          backgroundColor: "white",
+        }}
       >
         <HeaderContent title="入出金管理">
           <Button
@@ -45,10 +50,11 @@ export const AppBar: FC<Props> = (props) => {
         </HeaderContent>
       </Header>
       <Box
-        mt="60px"
+        pt="60px"
         maw="765px"
         mx="auto"
         p="4px"
+        mih="100vh"
         sx={{
           backgroundColor: "rgb(248,249,250)",
         }}
