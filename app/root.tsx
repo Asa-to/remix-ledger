@@ -40,6 +40,8 @@ export const action = async ({ request }: ActionArgs) => {
       },
     });
   }
+
+  return null;
 };
 
 export default function App() {

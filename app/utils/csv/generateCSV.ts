@@ -3,7 +3,7 @@ export const generateCSV = <
 >(
   data: T
 ) => {
-  const keys = data ?? Object.keys(data[0]);
+  const keys = data ? Object.keys(data[0]) : ["N/A"];
   const csvContent =
     "data:text/csv;charset=utf-8," +
     keys.join(",") +
