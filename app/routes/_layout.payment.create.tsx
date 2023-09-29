@@ -37,11 +37,11 @@ export const action = async ({ request }: ActionArgs) => {
   const redirectTo = body.get("redirectTo")?.toString();
 
   await createPayment({
-    payDate: body.get("payDate") as string,
-    category: body.get("category") as string,
+    payDate: body.get("payDate")?.toString() ?? "",
+    category: body.get("category")?.toString() ?? "",
     value: Number(body.get("value")) * (body.get("type") === "1" ? 1 : -1),
-    userId: body.get("userId") as string,
-    remarks: body.get("remarks") as string,
+    userId: body.get("userId")?.toString() ?? "",
+    remarks: body.get("remarks")?.toString() ?? "",
     payPer: Number(body.get("payPer")),
   });
 
