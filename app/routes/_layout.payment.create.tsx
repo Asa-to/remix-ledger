@@ -17,14 +17,14 @@ import { redirect, typedjson, useTypedLoaderData } from "remix-typedjson";
 import { getAllUsers } from "~/models/user.server";
 import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
-import { userIdCookie } from "~/cookie.server";
 import { getNow } from "~/utils/date/getNow";
+import { userCookie } from "~/cookie.server";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const categories = (await getCategories()).map((item) => item.category);
   const users = await getAllUsers();
   const cookieHeader = request.headers.get("Cookie");
-  const userId = await userIdCookie.parse(cookieHeader);
+  const userId = await userCookie.parse(cookieHeader);
   return typedjson({
     categories,
     users,
@@ -45,16 +45,8 @@ export const action = async ({ request }: ActionArgs) => {
     payPer: Number(body.get("payPer")),
   });
 
-  const userId = body.get("userId")?.toString();
-
   if (redirectTo) {
-    return redirect(redirectTo, {
-      headers: {
-        "Set-Cookie": await userIdCookie.serialize({
-          userId,
-        }),
-      },
-    });
+    return redirect(redirectTo);
   }
 };
 

@@ -1,22 +1,29 @@
-import { Alert, Box, Button, Stack, TextInput } from "@mantine/core";
+import { Alert, Box, Button, Select, Stack, TextInput } from "@mantine/core";
 import type { LoaderArgs } from "@remix-run/node";
 import { Form, Outlet } from "@remix-run/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
 import { AppBar } from "~/components/AppBar";
-import { isLoginCookie } from "~/cookie.server";
+import { userCookie } from "~/cookie.server";
+import { getAllUsers } from "~/models/user.server";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const cookieHeader = request.headers.get("Cookie");
-  const isLogin = await isLoginCookie.parse(cookieHeader);
+  const { user: userId } = await userCookie.parse(cookieHeader);
+  const users = await getAllUsers();
   return typedjson({
-    isLogin,
+    userId,
+    users,
   });
 };
 
 const AppLayout = () => {
-  const { isLogin } = useTypedLoaderData<typeof loader>();
+  const { userId, users } = useTypedLoaderData<typeof loader>();
+  const usersForSelect = users.map((item) => ({
+    label: item.name,
+    value: item.id,
+  }));
 
   const [init, setInit] = useState(false);
   useEffect(() => {
@@ -28,8 +35,8 @@ const AppLayout = () => {
 
   return (
     <Box sx={{ backgroundColor: "#c8c8c8" }}>
-      <AppBar>
-        {isLogin ? (
+      <AppBar userId={userId}>
+        {userId ? (
           <Outlet />
         ) : (
           <Box m="auto" maw="365px" sx={{ gap: "8px" }} pt="8px">
@@ -40,6 +47,11 @@ const AppLayout = () => {
             </Alert>
             <Form method="POST">
               <Stack spacing="8px">
+                <Select
+                  name="userId"
+                  label="ユーザー"
+                  data={usersForSelect}
+                ></Select>
                 <TextInput name="password" label="パスワード" />
                 <Button type="submit">ログイン</Button>
               </Stack>

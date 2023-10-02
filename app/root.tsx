@@ -11,7 +11,7 @@ import {
 } from "@remix-run/react";
 import sha256 from "crypto-js/sha256";
 import styles from "~/styles/global.css";
-import { isLoginCookie } from "./cookie.server";
+import { userCookie } from "./cookie.server";
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
@@ -29,13 +29,14 @@ export const action = async ({ request }: ActionArgs) => {
   const body = await request.formData();
   const hash =
     "71f7bf21c708ba1233596264ce0224c24104b016bd9844df953f68a2a422acb7";
+  const user = body.get("userId")?.toString();
   const canLogin =
     hash === sha256(body.get("password")?.toString() ?? "")?.toString();
   if (canLogin) {
     return redirect("/", {
       headers: {
-        "Set-Cookie": await isLoginCookie.serialize({
-          isLogin: canLogin,
+        "Set-Cookie": await userCookie.serialize({
+          user: user,
         }),
       },
     });
