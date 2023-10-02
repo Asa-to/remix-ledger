@@ -8,10 +8,11 @@ import { Link, useLocation } from "@remix-run/react";
 
 type Props = {
   children: ReactNode;
+  userId: string;
 };
 
 export const AppBar: FC<Props> = (props) => {
-  const { children } = props;
+  const { children, userId } = props;
   const [opened, setOpened] = useState(false);
   const location = useLocation();
   const pathname = location.pathname;
@@ -26,7 +27,7 @@ export const AppBar: FC<Props> = (props) => {
         title="入出金管理"
         overlayProps={{ opacity: 0.5, blur: 4 }}
       >
-        <NavbarContent onClick={() => setOpened(false)} />
+        <NavbarContent closeNavBar={() => setOpened(false)} userId={userId} />
       </Drawer>
       <Header
         height="60px"
