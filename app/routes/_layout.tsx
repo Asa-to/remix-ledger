@@ -10,7 +10,8 @@ import { getAllUsers } from "~/models/user.server";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const cookieHeader = request.headers.get("Cookie");
-  const { userId } = await userCookie.parse(cookieHeader ?? "");
+  const data = cookieHeader && (await userCookie.parse(cookieHeader));
+  const userId = data?.userId;
   const users = await getAllUsers();
   return typedjson({
     userId,
