@@ -30,7 +30,6 @@ export const action = async ({ request }: ActionArgs) => {
   const hash =
     "71f7bf21c708ba1233596264ce0224c24104b016bd9844df953f68a2a422acb7";
   const userId = body.get("userId")?.toString();
-  console.log(userId);
   const canLogin =
     hash === sha256(body.get("password")?.toString() ?? "")?.toString();
   if (canLogin) {
