@@ -41,6 +41,7 @@ const AppLayout = () => {
           <Outlet />
         ) : (
           <Box m="auto" maw="365px" sx={{ gap: "8px" }} pt="8px">
+            {userId}
             <Alert variant="light" color="blue" icon={<AiOutlineInfoCircle />}>
               アプリケーションを利用するためには
               <br />
