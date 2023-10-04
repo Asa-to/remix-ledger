@@ -11,12 +11,13 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  icon      String?
-  Payment   Payment[]
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  icon        String?
+  Payment     Payment[]
+  UserPayment UserPayment[]
 }
 
 model Payment {
@@ -30,4 +31,16 @@ model Payment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   payPer    Int      @default(50)
+}
+
+model UserPayment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  value     Int
+  category  String
+  remarks   String?
+  payDate   DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

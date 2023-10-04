@@ -1,11 +1,11 @@
 import { Button, Flex, Text, Stack, Box } from "@mantine/core";
-import type { Payment, User } from "@prisma/client";
+import type { Payment, User, UserPayment } from "@prisma/client";
 import { Link, useLocation } from "@remix-run/react";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 
 type Props = {
-  payment: Payment;
-  users: User[];
+  payment: Payment | UserPayment;
+  users?: User[];
 };
 
 export const PaymentCard = (props: Props) => {
@@ -52,7 +52,7 @@ export const PaymentCard = (props: Props) => {
           </Button>
         </Flex>
         <Text align="left" my="auto">
-          {users.filter((user) => user.id === payment.userId)[0].name}{" "}
+          {users && users.filter((user) => user.id === payment.userId)[0].name}{" "}
         </Text>
         <Text align="left" my="auto">
           {payment.category}

@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import type { Prisma, UserPayment } from "@prisma/client";
 import { prisma } from "~/db.server";
 
 export const createPayment = async (
@@ -72,6 +72,44 @@ export const deletePayment = async (id: string) => {
   return prisma.payment.delete({
     where: {
       id,
+    },
+  });
+};
+
+export const createUserPayment = async (
+  userPayment: Prisma.UserPaymentUncheckedCreateInput
+) => {
+  return prisma.userPayment.create({
+    data: userPayment,
+  });
+};
+
+export const getUserCategories = async () => {
+  return prisma.userPayment.findMany({
+    select: {
+      category: true,
+    },
+  });
+};
+
+/*
+ * startを含みendを含まない日付間のデータを返す
+ * @param start
+ * @param end
+ * @returns
+ */
+export const getUesrPaymentByDateRange = async (start: Date, end: Date) => {
+  return prisma.userPayment.findMany({
+    orderBy: [
+      {
+        payDate: "desc",
+      },
+    ],
+    where: {
+      payDate: {
+        gte: start,
+        lte: end,
+      },
     },
   });
 };
