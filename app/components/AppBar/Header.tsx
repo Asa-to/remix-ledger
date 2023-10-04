@@ -17,7 +17,7 @@ export const HeaderContent: FC<Props> = (props) => {
     >
       <Box my="auto">
         <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-          <Title>{title}</Title>
+          <Title order={3}>{title}</Title>
         </Link>
       </Box>
       <Flex direction="row" align="center" justify="right" gap="16px">

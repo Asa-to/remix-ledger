@@ -43,11 +43,19 @@ export const AppBar: FC<Props> = (props) => {
         <HeaderContent title="入出金管理">
           <Button
             component={Link}
+            to={`/user/${userId}/create`}
+            state={{ from: pathname + search }}
+            variant="gradient"
+          >
+            個人
+          </Button>
+          <Button
+            component={Link}
             to="/payment/create"
             state={{ from: pathname + search }}
             variant="gradient"
           >
-            収支入力
+            グループ
           </Button>
           <Burger onClick={() => setOpened((v) => !v)} opened={opened} />
         </HeaderContent>
