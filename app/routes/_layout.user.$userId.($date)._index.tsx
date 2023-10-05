@@ -21,7 +21,7 @@ import { PaymentCard } from "~/components/PaymentCard";
 import { getDateByMonthDifference } from "~/utils/date/getDatebyMonthDifference";
 import { getNow } from "~/utils/date/getNow";
 import { generateCSV } from "~/utils/csv/generateCSV";
-import type { Payment, User, UserPayment } from "@prisma/client";
+import type { User, UserPayment } from "@prisma/client";
 
 export const loader = async ({ params }: LoaderArgs) => {
   const date = params.date ? new Date(params.date) : getNow();
@@ -138,7 +138,11 @@ const App: FC = () => {
                   <Text>{dateSum}円</Text>
                 </Group>
               )}
-              <PaymentCard payment={item} />
+              <PaymentCard
+                payment={item}
+                editLink={`/user/${user.id}/edit/${item.id}`}
+                deleteLink={`/user/${user.id}/delete/${item.id}`}
+              />
             </Stack>
           );
         })}
