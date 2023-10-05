@@ -113,3 +113,27 @@ export const getUesrPaymentByDateRange = async (start: Date, end: Date) => {
     },
   });
 };
+
+export const getUserPayment = async (id: string) => {
+  return prisma.userPayment.findFirst({ where: { id } });
+};
+
+export const updateUserPayment = async (
+  id: string,
+  payment: Prisma.UserPaymentUncheckedUpdateInput
+) => {
+  return prisma.userPayment.update({
+    where: {
+      id,
+    },
+    data: payment,
+  });
+};
+
+export const deleteUserPayment = async (id: string) => {
+  return prisma.userPayment.delete({
+    where: {
+      id,
+    },
+  });
+};

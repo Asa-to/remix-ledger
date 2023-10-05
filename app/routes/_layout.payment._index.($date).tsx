@@ -168,7 +168,12 @@ const App: FC = () => {
                   <Text>{dateSum}円</Text>
                 </Group>
               )}
-              <PaymentCard payment={item} users={users} />
+              <PaymentCard
+                payment={item}
+                users={users}
+                editLink={`/payment/edit/${item.id}`}
+                deleteLink={`/payment/delete/${item.id}`}
+              />
             </Stack>
           );
         })}

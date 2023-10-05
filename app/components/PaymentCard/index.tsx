@@ -4,12 +4,14 @@ import { Link, useLocation } from "@remix-run/react";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 
 type Props = {
+  editLink: string;
+  deleteLink: string;
   payment: Payment | UserPayment;
   users?: User[];
 };
 
 export const PaymentCard = (props: Props) => {
-  const { payment, users } = props;
+  const { payment, users, editLink, deleteLink } = props;
   const isIncome = 0 <= payment.value;
   const location = useLocation();
   const pathname = location.pathname;
@@ -27,7 +29,7 @@ export const PaymentCard = (props: Props) => {
           <Button
             variant="subtle"
             component={Link}
-            to={`/payment/edit/${payment.id}`}
+            to={editLink}
             p={0}
             sx={{ height: "fit-content" }}
             state={{ from: pathname + search }}
@@ -40,7 +42,7 @@ export const PaymentCard = (props: Props) => {
           <Button
             p={0}
             component={Link}
-            to={`/payment/delete/${payment.id}`}
+            to={deleteLink}
             variant="subtle"
             sx={{ height: "fit-content" }}
             state={{ from: pathname + search }}
