@@ -61,7 +61,7 @@ export const PaymentCreate = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
   const location = useLocation();
-  const redirectTo = location.state?.from ?? "/payment";
+  const redirectTo = location.state?.from ?? `/user/${myUserId}`;
 
   return (
     <Form method="POST" onSubmit={toggle}>
