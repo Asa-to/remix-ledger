@@ -2,7 +2,6 @@ import {
   Button,
   Grid,
   Group,
-  Input,
   LoadingOverlay,
   Radio,
   Select,
@@ -12,11 +11,7 @@ import {
 import { DateInput } from "@mantine/dates";
 import type { ActionArgs } from "@remix-run/node";
 import { Form, useLocation, useNavigate } from "@remix-run/react";
-import {
-  createUserPayment,
-  getCategories,
-  getUserCategories,
-} from "~/models/payment.server";
+import { createUserPayment, getUserCategories } from "~/models/payment.server";
 import type { LoaderArgs } from "@remix-run/node";
 import { redirect, typedjson, useTypedLoaderData } from "remix-typedjson";
 import { useState } from "react";
@@ -60,8 +55,7 @@ export const PaymentCreate = () => {
   const [visible, { toggle }] = useDisclosure(false);
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
-  const location = useLocation();
-  const redirectTo = location.state?.from ?? `/user/${myUserId}`;
+  const redirectTo = `/user/${myUserId}`;
 
   return (
     <Form method="POST" onSubmit={toggle}>
