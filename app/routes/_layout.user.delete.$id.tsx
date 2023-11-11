@@ -3,7 +3,6 @@ import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { Form, useLocation, useNavigate } from "@remix-run/react";
 import { redirect, typedjson, useTypedLoaderData } from "remix-typedjson";
 import { LabelValueItem } from "~/components/LabelValueItem";
-import { deletePayment } from "~/models/payment.server";
 import { deleteUser, getUser } from "~/models/user.server";
 
 export const loader = async ({ params }: LoaderArgs) => {
