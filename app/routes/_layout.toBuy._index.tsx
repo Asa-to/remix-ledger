@@ -1,8 +1,8 @@
 import { Button, Checkbox, Group, Stack, Text } from "@mantine/core";
 import type { ActionArgs } from "@remix-run/node";
 import { Form, Link } from "@remix-run/react";
-import { redirect, typedjson, useTypedLoaderData } from "remix-typedjson";
-import { deleteToBuy, deleteToBuys, getAllToBuy } from "~/models/tobuy.server";
+import { typedjson, useTypedLoaderData } from "remix-typedjson";
+import { deleteToBuys, getAllToBuy } from "~/models/tobuy.server";
 
 export const loader = async () => {
   const toBuyList = await getAllToBuy();
