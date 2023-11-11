@@ -17,6 +17,9 @@ export const NavbarContent: FC<Props> = (props) => {
       <Button component={Link} to={`/user/${userId}`} onClick={closeNavBar}>
         マイページ
       </Button>
+      <Button component={Link} to="/toBuy" onClick={closeNavBar}>
+        買う物リスト
+      </Button>
     </Stack>
   );
 };
