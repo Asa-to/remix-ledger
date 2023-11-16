@@ -151,6 +151,7 @@ export const PaymentCreate = () => {
           label="収支"
           type="text"
           name="value"
+          inputMode="numeric"
           required
           pattern="^[0-9]+$"
           autoFocus
