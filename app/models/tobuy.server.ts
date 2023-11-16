@@ -2,7 +2,13 @@ import type { Prisma } from "@prisma/client";
 import { prisma } from "~/db.server";
 
 export const createToBuy = async (toBuy: Prisma.ToBuyUncheckedCreateInput) => {
-  return prisma.toBuy.create({ data: toBuy });
+  return createToBuys([toBuy]);
+};
+
+export const createToBuys = async (
+  toBuy: Prisma.ToBuyUncheckedCreateInput[]
+) => {
+  return prisma.toBuy.createMany({ data: toBuy });
 };
 
 export const getAllToBuy = async () => {

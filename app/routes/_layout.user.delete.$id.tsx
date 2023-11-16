@@ -49,7 +49,7 @@ const UserDelete = () => {
           <Button variant="outline" onClick={goBack}>
             戻る
           </Button>
-          <Button type="submit" color="orange">
+          <Button type="submit" color="orange" autoFocus>
             削除
           </Button>
         </Group>

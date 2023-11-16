@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import type { ActionArgs } from "@remix-run/node";
-import { Form, useLocation, useNavigate } from "@remix-run/react";
+import { Form, useNavigate } from "@remix-run/react";
 import { createUserPayment, getUserCategories } from "~/models/payment.server";
 import type { LoaderArgs } from "@remix-run/node";
 import { redirect, typedjson, useTypedLoaderData } from "remix-typedjson";
@@ -101,14 +101,15 @@ export const PaymentCreate = () => {
             </Radio.Group>
           </Grid.Col>
         </Grid>
+        <TextInput label="備考" name="remarks" />
         <TextInput
           label="収支"
           type="text"
           name="value"
           required
           pattern="^[0-9]+$"
+          autoFocus
         />
-        <TextInput label="備考" name="remarks" />
         <Stack sx={{ flexDirection: "row" }}>
           <Button onClick={goBack}>戻る</Button>
           <Button type="submit">決定</Button>
