@@ -3,6 +3,7 @@ import {
   Grid,
   Group,
   LoadingOverlay,
+  MultiSelect,
   Radio,
   Select,
   Stack,
@@ -19,15 +20,18 @@ import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { getNow } from "~/utils/date/getNow";
 import { userCookie } from "~/cookie.server";
+import { deleteToBuys, getAllToBuy } from "~/models/tobuy.server";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const categories = (await getCategories()).map((item) => item.category);
   const users = await getAllUsers();
   const cookieHeader = request.headers.get("Cookie");
   const userId = await userCookie.parse(cookieHeader);
+  const toBuyList = await getAllToBuy();
   return typedjson({
     categories,
     users,
+    toBuyList,
     myUserId: userId?.userId as string | undefined,
   });
 };
@@ -45,6 +49,11 @@ export const action = async ({ request }: ActionArgs) => {
     payPer: Number(body.get("payPer")),
   });
 
+  const toBuyList = body.getAll("toBuyList").map((item) => item.toString());
+  if (toBuyList[0]) {
+    await deleteToBuys(toBuyList);
+  }
+
   if (redirectTo) {
     return redirect(redirectTo);
   }
@@ -55,8 +64,13 @@ export const PaymentCreate = () => {
     categories: baseCategories,
     users,
     myUserId,
+    toBuyList,
   } = useTypedLoaderData<typeof loader>();
   const usersForSelect = users.map((item) => ({
+    label: item.name,
+    value: item.id,
+  }));
+  const toBuyListForSelect = toBuyList.map((item) => ({
     label: item.name,
     value: item.id,
   }));
@@ -120,13 +134,6 @@ export const PaymentCreate = () => {
           </Grid.Col>
         </Grid>
         <TextInput
-          label="収支"
-          type="text"
-          name="value"
-          required
-          pattern="^[0-9]+$"
-        />
-        <TextInput
           label="支払い者の負担割合（％）"
           type="text"
           name="payPer"
@@ -135,6 +142,19 @@ export const PaymentCreate = () => {
           pattern="^[0-9]{2}|100"
         />
         <TextInput label="備考" name="remarks" />
+        <MultiSelect
+          data={toBuyListForSelect}
+          name="toBuyList"
+          label="買い物リストから購入したもの"
+        />
+        <TextInput
+          label="収支"
+          type="text"
+          name="value"
+          required
+          pattern="^[0-9]+$"
+          autoFocus
+        />
         <Stack sx={{ flexDirection: "row" }}>
           <Button onClick={goBack}>戻る</Button>
           <Button type="submit">決定</Button>

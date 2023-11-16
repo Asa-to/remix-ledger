@@ -22,16 +22,22 @@ const ToBuyPage = () => {
 
   return (
     <Form method="POST">
-      <Stack spacing="md">
+      <Stack spacing="md" p="8px">
         <Stack spacing={0}>
           {toBuyList.map((toBuy) => {
             return (
               <Group key={toBuy.id}>
                 <Group spacing="xs">
-                  {"-"}
-                  <Checkbox color="red" name="id" value={toBuy.id} />
+                  <Checkbox
+                    id={toBuy.id}
+                    color="red"
+                    name="id"
+                    value={toBuy.id}
+                  />
                 </Group>
-                <Text>{toBuy.name}</Text>
+                <label htmlFor={toBuy.id}>
+                  <Text>{toBuy.name}</Text>
+                </label>
               </Group>
             );
           })}
