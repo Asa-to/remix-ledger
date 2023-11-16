@@ -108,6 +108,7 @@ export const PaymentCreate = () => {
           name="value"
           required
           pattern="^[0-9]+$"
+          inputMode="numeric"
           autoFocus
         />
         <Stack sx={{ flexDirection: "row" }}>
