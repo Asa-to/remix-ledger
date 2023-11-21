@@ -12,10 +12,10 @@ export const NavbarContent: FC<Props> = (props) => {
   return (
     <Stack spacing="8px" mt="60px">
       <Button component={Link} to="/payment" onClick={closeNavBar}>
-        入出金
+        グループ入出金
       </Button>
       <Button component={Link} to={`/user/${userId}`} onClick={closeNavBar}>
-        マイページ
+        個人入出金
       </Button>
       <Button component={Link} to="/toBuy" onClick={closeNavBar}>
         買う物リスト

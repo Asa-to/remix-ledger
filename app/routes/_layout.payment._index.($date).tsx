@@ -111,6 +111,14 @@ const App: FC = () => {
         <Text>{Math.abs(curCategorySum)}</Text>
         <Text>円</Text>
       </Box>
+      <Button
+        component={Link}
+        to="/payment/create"
+        state={{ from: pathname + search }}
+        variant="gradient"
+      >
+        収支入力
+      </Button>
       <Flex direction="row" justify="space-between" px="8px">
         <Group>
           <Button
@@ -178,14 +186,6 @@ const App: FC = () => {
           );
         })}
       </Box>
-      <Button
-        component={Link}
-        to="/payment/create"
-        state={{ from: pathname + search }}
-        variant="gradient"
-      >
-        収支入力
-      </Button>
     </Stack>
   );
 };
