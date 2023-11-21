@@ -10,7 +10,7 @@ type Props = {
 export const MultiInput = (props: Props) => {
   const { name, require } = props;
 
-  const [value, setValue] = useState<string[]>(["test"]);
+  const [value, setValue] = useState<string[]>([]);
   const [input, setInput] = useState("");
 
   const deleteItem = useCallback((index: number) => {
