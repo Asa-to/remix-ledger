@@ -141,12 +141,6 @@ export const PaymentCreate = () => {
           required
           pattern="^[0-9]{2}|100"
         />
-        <TextInput label="備考" name="remarks" />
-        <MultiSelect
-          data={toBuyListForSelect}
-          name="toBuyList"
-          label="買い物リストから購入したもの"
-        />
         <TextInput
           label="収支"
           type="text"
@@ -155,6 +149,12 @@ export const PaymentCreate = () => {
           required
           pattern="^[0-9]+$"
           autoFocus
+        />
+        <TextInput label="備考" name="remarks" />
+        <MultiSelect
+          data={toBuyListForSelect}
+          name="toBuyList"
+          label="買い物リストから購入したもの"
         />
         <Stack sx={{ flexDirection: "row" }}>
           <Button onClick={goBack}>戻る</Button>
