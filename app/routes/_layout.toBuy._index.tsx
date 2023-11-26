@@ -1,4 +1,4 @@
-import { Button, Checkbox, Group, Stack, Text } from "@mantine/core";
+import { Button, Checkbox, Divider, Group, Stack, Text } from "@mantine/core";
 import type { ActionArgs } from "@remix-run/node";
 import { Form, Link } from "@remix-run/react";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
@@ -26,15 +26,14 @@ const ToBuyPage = () => {
         <Stack spacing={0}>
           {toBuyList.map((toBuy) => {
             return (
-              <Group key={toBuy.id}>
-                <Group spacing="xs">
-                  <Checkbox
-                    id={toBuy.id}
-                    color="red"
-                    name="id"
-                    value={toBuy.id}
-                  />
-                </Group>
+              <Group key={toBuy.id} noWrap>
+                <Checkbox
+                  id={toBuy.id}
+                  color="red"
+                  name="id"
+                  value={toBuy.id}
+                  sx={{ alignSelf: "start" }}
+                />
                 <label htmlFor={toBuy.id}>
                   <Text>{toBuy.name}</Text>
                 </label>
