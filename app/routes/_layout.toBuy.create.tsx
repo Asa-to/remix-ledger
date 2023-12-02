@@ -24,7 +24,9 @@ const ToBuyCreate = () => {
       <LoadingOverlay visible={visible} overlayBlur={2} />
       <Stack>
         <MultiInput name="name" require />
-        <Button type="submit">登録</Button>
+        <Button type="submit" disabled={visible}>
+          登録
+        </Button>
       </Stack>
     </Form>
   );

@@ -158,7 +158,9 @@ export const PaymentCreate = () => {
         />
         <Stack sx={{ flexDirection: "row" }}>
           <Button onClick={goBack}>戻る</Button>
-          <Button type="submit">決定</Button>
+          <Button type="submit" disabled={visible}>
+            決定
+          </Button>
         </Stack>
       </Stack>
     </Form>
