@@ -27,7 +27,7 @@ export const loader = async ({ params }: LoaderArgs) => {
   const date = params.date ? new Date(params.date) : getNow();
   const payments = await getPaymentByDateRange(
     getFirstDayOfMonth(date),
-    getLastDayOfMonth(date)
+    getLastDayOfMonth(date),
   );
   const users = await getAllUsers();
   return typedjson({ payments, users });
@@ -46,7 +46,7 @@ const App: FC = () => {
   const totalExpense = Math.abs(
     payments
       .filter((item) => item.value < 0)
-      .reduce((total, curVal) => total + curVal.value, 0)
+      .reduce((total, curVal) => total + curVal.value, 0),
   );
 
   const categories = Array.from(new Set(payments.map((item) => item.category)));
@@ -75,7 +75,7 @@ const App: FC = () => {
           const userTotalExpense = Math.abs(
             userData
               .filter((item) => item.value < 0)
-              .reduce((total, item) => total + Math.abs(item.value), 0)
+              .reduce((total, item) => total + Math.abs(item.value), 0),
           );
           const userTotalIncome = userData
             .filter((item) => 0 < item.value)
@@ -91,15 +91,18 @@ const App: FC = () => {
                     (isPayedUser ? payment.payPer : 100 - payment.payPer)) /
                     100
                 );
-              }, 0)
+              }, 0),
           );
           const calcResult = usersInvoice - userTotalExpense - userTotalIncome;
           const isPayOver = calcResult < 0;
+          if (isPayOver) {
+            return;
+          }
           return (
             <Fragment key={user.id}>
               <Text>{user.name}</Text>
               <Text>{Math.abs(calcResult).toLocaleString()}</Text>
-              <Text>{isPayOver ? "円受け取る" : "円渡す"}</Text>
+              <Text>円渡す</Text>
             </Fragment>
           );
         })}
@@ -125,7 +128,7 @@ const App: FC = () => {
             component={Link}
             to={`/payment/${formatDateTime(
               getDateByMonthDifference(date, -1),
-              "YYYY-MM-DD"
+              "YYYY-MM-DD",
             )}`}
             variant="subtle"
           >
@@ -136,7 +139,7 @@ const App: FC = () => {
             component={Link}
             to={`/payment/${formatDateTime(
               getDateByMonthDifference(date, 1),
-              "YYYY-MM-DD"
+              "YYYY-MM-DD",
             )}`}
             variant="subtle"
           >
@@ -160,9 +163,9 @@ const App: FC = () => {
           const dateSum = Math.abs(
             payments
               .filter(
-                (item) => item.value < 0 && item.payDate.getDate() === curDate
+                (item) => item.value < 0 && item.payDate.getDate() === curDate,
               )
-              .reduce((pre, cur) => pre + cur.value, 0)
+              .reduce((pre, cur) => pre + cur.value, 0),
           );
           return (
             <Stack
