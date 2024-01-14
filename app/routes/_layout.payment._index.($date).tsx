@@ -1,14 +1,5 @@
-import { Fragment, type FC, useState } from "react";
-import {
-  Button,
-  Text,
-  Stack,
-  Box,
-  Group,
-  Title,
-  Select,
-  Flex,
-} from "@mantine/core";
+import { type FC } from "react";
+import { Button, Text, Stack, Box, Group, Title, Flex } from "@mantine/core";
 import { getPaymentByDateRange } from "~/models/payment.server";
 import { getAllUsers } from "~/models/user.server";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
@@ -22,19 +13,23 @@ import { getDateByMonthDifference } from "~/utils/date/getDatebyMonthDifference"
 import { getNow } from "~/utils/date/getNow";
 import { generateCSV } from "~/utils/csv/generateCSV";
 import type { Payment } from "@prisma/client";
+import { PaymentHeader } from "~/components/PaymentHeader";
+import { userCookie } from "~/cookie.server";
 
-export const loader = async ({ params }: LoaderArgs) => {
+export const loader = async ({ params, request }: LoaderArgs) => {
   const date = params.date ? new Date(params.date) : getNow();
   const payments = await getPaymentByDateRange(
     getFirstDayOfMonth(date),
     getLastDayOfMonth(date),
   );
   const users = await getAllUsers();
-  return typedjson({ payments, users });
+  const cookieHeader = request.headers.get("Cookie");
+  const myId = await userCookie.parse(cookieHeader);
+  return typedjson({ payments, users, myId: myId?.userId });
 };
 
 const App: FC = () => {
-  const { payments, users } = useTypedLoaderData<typeof loader>();
+  const { payments, users, myId } = useTypedLoaderData<typeof loader>();
   const pathName = useLocation().pathname.split("/").pop();
   const date = new Date(pathName ?? "")?.getTime()
     ? new Date(pathName ?? "")
@@ -43,77 +38,15 @@ const App: FC = () => {
   const pathname = location.pathname;
   const search = location.search;
 
-  const totalExpense = Math.abs(
-    payments
-      .filter((item) => item.value < 0)
-      .reduce((total, curVal) => total + curVal.value, 0),
-  );
-
-  const categories = Array.from(new Set(payments.map((item) => item.category)));
-  const [curCategory, setCurCategory] = useState<string | null>(categories[0]);
-  const curCategorySum = payments
-    .filter((item) => item.category === curCategory)
-    .reduce((pre, cur) => pre + cur.value, 0);
-
   let curDate: null | number = null;
 
   return (
     <Stack spacing={4}>
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "120px 80px 1fr",
-          gap: "8px",
-          alignItems: "center",
-        }}
-      >
-        <Text>{date.getMonth() + 1}月総出費</Text>
-        <Text>{Math.abs(totalExpense).toLocaleString()}</Text>
-        <Text>円</Text>
-        {users.map((user) => {
-          const userData = payments.filter((item) => item.userId === user.id);
-          const userTotalExpense = Math.abs(
-            userData
-              .filter((item) => item.value < 0)
-              .reduce((total, item) => total + Math.abs(item.value), 0),
-          );
-          const userTotalIncome = userData
-            .filter((item) => 0 < item.value)
-            .reduce((pre, cur) => pre + cur.value, 0);
-          const usersInvoice = Math.abs(
-            payments
-              .filter((payment) => payment.value < 0)
-              .reduce((total, payment) => {
-                const isPayedUser = payment.userId === user.id;
-                return (
-                  total +
-                  (payment.value *
-                    (isPayedUser ? payment.payPer : 100 - payment.payPer)) /
-                    100
-                );
-              }, 0),
-          );
-          const calcResult = usersInvoice - userTotalExpense - userTotalIncome;
-          const isPayOver = calcResult < 0;
-          if (isPayOver) {
-            return;
-          }
-          return (
-            <Fragment key={user.id}>
-              <Text>{user.name}</Text>
-              <Text>{Math.abs(calcResult).toLocaleString()}</Text>
-              <Text>円渡す</Text>
-            </Fragment>
-          );
-        })}
-        <Select
-          value={curCategory}
-          data={categories}
-          onChange={setCurCategory}
-        />
-        <Text>{Math.abs(curCategorySum)}</Text>
-        <Text>円</Text>
-      </Box>
+      <PaymentHeader
+        date={date}
+        payments={payments}
+        user={users.filter((v) => v.id === myId)[0]}
+      />
       <Button
         component={Link}
         to="/payment/create"
