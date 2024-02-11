@@ -5,6 +5,7 @@ type Props = {
   payments: Payment[];
 };
 
+// 支払うべき総額
 export const getUserExpectationPay = (props: Props) => {
   const { userId, payments } = props;
   return Math.abs(
