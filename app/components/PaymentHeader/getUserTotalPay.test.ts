@@ -58,6 +58,6 @@ const payments: Payment[] = [
 describe("getUserTotalPay", () => {
   test("普通に動くことの確認", () => {
     const totalPay = getUserTotalPay({ userId: "1", payments });
-    expect(totalPay).toBe(100);
+    expect(totalPay).toBe(300);
   });
 });

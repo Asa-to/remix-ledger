@@ -5,11 +5,10 @@ type Props = {
   payments: Payment[];
 };
 
+// 支払った総額
 export const getUserTotalPay = (props: Props) => {
   const { userId, payments } = props;
-  return Math.abs(
-    payments
-      .filter((v) => v.userId === userId)
-      .reduce((pre, cur) => pre + cur.value, 0),
-  );
+  return payments
+    .filter((v) => v.userId === userId)
+    .reduce((pre, cur) => pre + Math.abs(cur.value), 0);
 };
