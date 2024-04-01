@@ -33,7 +33,7 @@ export const MultiInput = (props: Props) => {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              if (input) {
+              if (input && !e.nativeEvent.isComposing) {
                 mergeInputValue();
                 e.preventDefault();
               }
