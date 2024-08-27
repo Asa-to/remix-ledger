@@ -2,7 +2,7 @@ import type { Prisma, UserPayment } from "@prisma/client";
 import { prisma } from "~/db.server";
 
 export const createPayment = async (
-  payment: Prisma.PaymentUncheckedCreateInput
+  payment: Prisma.PaymentUncheckedCreateInput,
 ) => {
   return prisma.payment.create({ data: payment });
 };
@@ -58,7 +58,7 @@ export const getBalance = async () => {
 
 export const updatePayment = async (
   id: string,
-  payment: Prisma.PaymentUncheckedCreateInput
+  payment: Prisma.PaymentUncheckedCreateInput,
 ) => {
   return prisma.payment.update({
     where: {
@@ -77,7 +77,7 @@ export const deletePayment = async (id: string) => {
 };
 
 export const createUserPayment = async (
-  userPayment: Prisma.UserPaymentUncheckedCreateInput
+  userPayment: Prisma.UserPaymentUncheckedCreateInput,
 ) => {
   return prisma.userPayment.create({
     data: userPayment,
@@ -94,11 +94,16 @@ export const getUserCategories = async () => {
 
 /*
  * startを含みendを含まない日付間のデータを返す
+ * @param userId
  * @param start
  * @param end
  * @returns
  */
-export const getUesrPaymentByDateRange = async (start: Date, end: Date) => {
+export const getUesrPaymentByDateRange = async (
+  userId: string,
+  start: Date,
+  end: Date,
+) => {
   return prisma.userPayment.findMany({
     orderBy: [
       {
@@ -106,6 +111,7 @@ export const getUesrPaymentByDateRange = async (start: Date, end: Date) => {
       },
     ],
     where: {
+      userId: userId,
       payDate: {
         gte: start,
         lte: end,
@@ -120,7 +126,7 @@ export const getUserPayment = async (id: string) => {
 
 export const updateUserPayment = async (
   id: string,
-  payment: Prisma.UserPaymentUncheckedUpdateInput
+  payment: Prisma.UserPaymentUncheckedUpdateInput,
 ) => {
   return prisma.userPayment.update({
     where: {

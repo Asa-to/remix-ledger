@@ -14,9 +14,6 @@ type Props = {
 export const AppBar: FC<Props> = (props) => {
   const { children, userId } = props;
   const [opened, setOpened] = useState(false);
-  const location = useLocation();
-  const pathname = location.pathname;
-  const search = location.search;
 
   return (
     <Box mih="100vh">
@@ -24,7 +21,6 @@ export const AppBar: FC<Props> = (props) => {
         opened={opened}
         onClose={() => setOpened(false)}
         size={300}
-        title="入出金管理"
         overlayProps={{ opacity: 0.5, blur: 4 }}
       >
         <NavbarContent closeNavBar={() => setOpened(false)} userId={userId} />
@@ -41,21 +37,8 @@ export const AppBar: FC<Props> = (props) => {
         }}
       >
         <HeaderContent title="入出金管理">
-          <Button
-            component={Link}
-            to={`/user/${userId}/create`}
-            state={{ from: pathname + search }}
-            variant="gradient"
-          >
-            個人
-          </Button>
-          <Button
-            component={Link}
-            to="/payment/create"
-            state={{ from: pathname + search }}
-            variant="gradient"
-          >
-            グループ
+          <Button component={Link} to="/logout">
+            ログアウト
           </Button>
           <Burger onClick={() => setOpened((v) => !v)} opened={opened} />
         </HeaderContent>

@@ -26,8 +26,9 @@ import type { User, UserPayment } from "@prisma/client";
 export const loader = async ({ params }: LoaderArgs) => {
   const date = params.date ? new Date(params.date) : getNow();
   const payments = await getUesrPaymentByDateRange(
+    params.userId ?? "",
     getFirstDayOfMonth(date),
-    getLastDayOfMonth(date)
+    getLastDayOfMonth(date),
   );
   const user = (await getUser(params.userId ?? "")) as User;
   return typedjson({
@@ -49,7 +50,7 @@ const App: FC = () => {
   const totalExpense = Math.abs(
     payments
       .filter((item) => item.value < 0)
-      .reduce((total, curVal) => total + curVal.value, 0)
+      .reduce((total, curVal) => total + curVal.value, 0),
   );
 
   const categories = Array.from(new Set(payments.map((item) => item.category)));
@@ -87,7 +88,7 @@ const App: FC = () => {
             component={Link}
             to={`/user/${user.id}/${formatDateTime(
               getDateByMonthDifference(date, -1),
-              "YYYY-MM-DD"
+              "YYYY-MM-DD",
             )}`}
             variant="subtle"
           >
@@ -98,7 +99,7 @@ const App: FC = () => {
             component={Link}
             to={`/user/${user.id}/${formatDateTime(
               getDateByMonthDifference(date, 1),
-              "YYYY-MM-DD"
+              "YYYY-MM-DD",
             )}`}
             variant="subtle"
           >
@@ -122,9 +123,9 @@ const App: FC = () => {
           const dateSum = Math.abs(
             payments
               .filter(
-                (item) => item.value < 0 && item.payDate.getDate() === curDate
+                (item) => item.value < 0 && item.payDate.getDate() === curDate,
               )
-              .reduce((pre, cur) => pre + cur.value, 0)
+              .reduce((pre, cur) => pre + cur.value, 0),
           );
           return (
             <Stack

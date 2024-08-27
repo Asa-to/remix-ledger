@@ -23,7 +23,16 @@ export const loader = async ({ request }: LoaderArgs) => {
     getFirstDayOfMonth(new Date()),
     getLastDayOfMonth(new Date()),
   );
+  if (!userId?.userId) {
+    return typedjson({
+      user,
+      payments,
+      userId: userId?.userId,
+      userPayments: [],
+    });
+  }
   const userPayments = await getUesrPaymentByDateRange(
+    userId?.userId ?? "",
     getFirstDayOfMonth(new Date()),
     getLastDayOfMonth(new Date()),
   );
