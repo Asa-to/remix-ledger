@@ -5,6 +5,10 @@ import { FC } from "react";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
 import { CoverArea } from "~/components/CoverArea";
 import { PaymentHeader } from "~/components/PaymentHeader";
+import { ClickBurstPurin } from "~/components/PompomPurin/ClickBurstPurin";
+import { HappyButton } from "~/components/PompomPurin/HappyButton";
+import { PompomPurin } from "~/components/PompomPurin";
+import { PopoutPurin } from "~/components/PompomPurin/PopoutPurin";
 import { UserPaymentHeader } from "~/components/UserPaymentHeader";
 import { userCookie } from "~/cookie.server";
 import {
@@ -54,64 +58,88 @@ const App: FC = () => {
   }
 
   return (
-    <Stack m="16px">
-      <CoverArea title="グループ">
-        <Box mb="16px">
-          <PaymentHeader date={new Date()} payments={payments} user={user} />
+    <ClickBurstPurin>
+      {/* 画面右上に固定でふわふわ */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: 10,
+          right: 20,
+          zIndex: 50,
+        }}
+      >
+        <PompomPurin size={80} />
+      </Box>
+      <Stack m="16px">
+        <CoverArea title="グループ">
+          <Box mb="16px">
+            <PaymentHeader date={new Date()} payments={payments} user={user} />
+          </Box>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2,1fr)",
+              gridRowGap: "16px",
+            }}
+          >
+            <PopoutPurin>
+              <Button
+                component={Link}
+                to="payment"
+                variant="outline"
+                sx={{ width: "150px" }}
+              >
+                家計簿を見る
+              </Button>
+            </PopoutPurin>
+            <PopoutPurin>
+              <Button
+                component={Link}
+                to="payment/create"
+                variant="outline"
+                sx={{ width: "150px" }}
+              >
+                入出金を登録する
+              </Button>
+            </PopoutPurin>
+          </Box>
+        </CoverArea>
+        <CoverArea title="個人">
+          <UserPaymentHeader userPayments={userPayments} date={new Date()} />
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2,1fr)",
+              gridRowGap: "16px",
+            }}
+          >
+            <PopoutPurin>
+              <Button
+                component={Link}
+                to={`user/${userId}`}
+                variant="outline"
+                sx={{ width: "150px" }}
+              >
+                家計簿を見る
+              </Button>
+            </PopoutPurin>
+            <PopoutPurin>
+              <Button
+                component={Link}
+                to={`user/${userId}/create`}
+                variant="outline"
+                sx={{ width: "150px" }}
+              >
+                入出金を登録する
+              </Button>
+            </PopoutPurin>
+          </Box>
+        </CoverArea>
+        <Box sx={{ display: "flex", justifyContent: "center", marginTop: "16px" }}>
+          <HappyButton />
         </Box>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2,1fr)",
-            gridRowGap: "16px",
-          }}
-        >
-          <Button
-            component={Link}
-            to="payment"
-            variant="outline"
-            sx={{ width: "150px" }}
-          >
-            家計簿を見る
-          </Button>
-          <Button
-            component={Link}
-            to="payment/create"
-            variant="outline"
-            sx={{ width: "150px" }}
-          >
-            入出金を登録する
-          </Button>
-        </Box>
-      </CoverArea>
-      <CoverArea title="個人">
-        <UserPaymentHeader userPayments={userPayments} date={new Date()} />
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2,1fr)",
-            gridRowGap: "16px",
-          }}
-        >
-          <Button
-            component={Link}
-            to={`user/${userId}`}
-            variant="outline"
-            sx={{ width: "150px" }}
-          >
-            家計簿を見る
-          </Button>
-          <Button
-            component={Link}
-            to={`user/${userId}/create`}
-            variant="outline"
-            sx={{ width: "150px" }}
-          >
-            入出金を登録する
-          </Button>
-        </Box>
-      </CoverArea>
-    </Stack>
+      </Stack>
+    </ClickBurstPurin>
   );
 };
 

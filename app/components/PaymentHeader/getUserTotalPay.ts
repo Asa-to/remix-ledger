@@ -9,6 +9,6 @@ type Props = {
 export const getUserTotalPay = (props: Props) => {
   const { userId, payments } = props;
   return payments
-    .filter((v) => v.userId === userId)
+    .filter((v) => v.userId === userId && v.value < 0)
     .reduce((pre, cur) => pre + Math.abs(cur.value), 0);
 };
