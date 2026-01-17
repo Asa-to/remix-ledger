@@ -5,3 +5,133 @@
 a {
   color: inherit;
 }
+
+/* ===== ポムポムプリン アニメーション ===== */
+
+/* ふわふわ浮遊 + 左右揺れ */
+@keyframes pompom-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(-2deg);
+  }
+  25% {
+    transform: translateY(-4px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+  75% {
+    transform: translateY(-4px) rotate(0deg);
+  }
+}
+
+/* ぴょんぴょん跳ねる */
+@keyframes pompom-jump {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  25% {
+    transform: translateY(-20px) scale(1.1);
+  }
+  50% {
+    transform: translateY(0) scale(0.9);
+  }
+  75% {
+    transform: translateY(-10px) scale(1.05);
+  }
+}
+
+/* キラキラ回転 */
+@keyframes sparkle {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1) rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* キラキラ浮遊 */
+@keyframes sparkle-float {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+}
+
+/* ボタンから飛び出す */
+@keyframes pompom-popout {
+  0% {
+    transform: translateY(0) scale(0.5);
+    opacity: 0;
+  }
+  20% {
+    transform: translateY(-30px) scale(1);
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(-50px) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-70px) scale(0.8);
+    opacity: 0;
+  }
+}
+
+/* クリック時バースト - 4方向 */
+@keyframes pompom-burst-top-left {
+  0% { transform: translate(0, 0) scale(0.3); opacity: 1; }
+  100% { transform: translate(-60px, -60px) scale(1); opacity: 0; }
+}
+
+@keyframes pompom-burst-top-right {
+  0% { transform: translate(0, 0) scale(0.3); opacity: 1; }
+  100% { transform: translate(60px, -60px) scale(1); opacity: 0; }
+}
+
+@keyframes pompom-burst-bottom-left {
+  0% { transform: translate(0, 0) scale(0.3); opacity: 1; }
+  100% { transform: translate(-60px, 60px) scale(1); opacity: 0; }
+}
+
+@keyframes pompom-burst-bottom-right {
+  0% { transform: translate(0, 0) scale(0.3); opacity: 1; }
+  100% { transform: translate(60px, 60px) scale(1); opacity: 0; }
+}
+
+/* 右から左への行進（親コンテナ基準） */
+@keyframes pompom-march {
+  0% { left: 100%; }
+  100% { left: -80px; }
+}
+
+/* 歩行中の上下ふわふわ動き */
+@keyframes pompom-walk-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* 位相ずれバージョン */
+@keyframes pompom-walk-bounce-alt {
+  0%, 100% { transform: translateY(-4px); }
+  50% { transform: translateY(4px); }
+}
+
+/* アクセシビリティ対応 */
+@media (prefers-reduced-motion: reduce) {
+  .pompom-character,
+  .pompom-sparkle,
+  .pompom-march-container {
+    animation: none !important;
+  }
+}

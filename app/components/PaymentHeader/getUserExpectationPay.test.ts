@@ -58,4 +58,34 @@ describe("getUserExpectationPay", () => {
     });
     expect(totalPay).toBe(50);
   });
+
+  test("自分の支出50%負担を計算できる", () => {
+    const totalPay = getUserExpectationPay({
+      userId: "1",
+      payments: [getPayment({ value: -100, payPer: 50 })],
+    });
+    expect(totalPay).toBe(50);
+  });
+
+  test("複数の支出を合計できる", () => {
+    const totalPay = getUserExpectationPay({
+      userId: "1",
+      payments: [
+        getPayment({ value: -100, payPer: 50 }),
+        getPayment({ value: -200, payPer: 50 }),
+      ],
+    });
+    expect(totalPay).toBe(150);
+  });
+
+  test("自分の収入を考慮しない", () => {
+    const totalPay = getUserExpectationPay({
+      userId: "1",
+      payments: [
+        getPayment({ value: -100, payPer: 50 }),
+        getPayment({ value: 100, payPer: 50 }),
+      ],
+    });
+    expect(totalPay).toBe(50);
+  });
 });
