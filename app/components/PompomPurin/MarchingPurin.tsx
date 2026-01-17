@@ -1,20 +1,19 @@
-import type { CSSProperties } from "react";
+import { useState, useEffect, type CSSProperties } from "react";
 
 type CharacterConfig = {
   image: string;
   size: number;
-  delay: number;
   bounceAlt?: boolean;
 };
 
 const characters: CharacterConfig[] = [
-  { image: "/images/pompompurin/happy.png", size: 60, delay: 0 },
-  { image: "/images/pompompurin/normal.png", size: 50, delay: 1.5, bounceAlt: true },
-  { image: "/images/pompompurin/patapata.png", size: 45, delay: 3, bounceAlt: false },
-  { image: "/images/pompompurin/purupuru.png", size: 50, delay: 4.5, bounceAlt: true },
-  { image: "/images/pompompurin/dance.png", size: 55, delay: 6 },
-  { image: "/images/pompompurin/mukimuki.png", size: 50, delay: 7.5, bounceAlt: true },
-  { image: "/images/pompompurin/nawatobi.png", size: 45, delay: 9 },
+  { image: "/images/pompompurin/normal.png", size: 50,  bounceAlt: true },
+  { image: "/images/pompompurin/happy.png", size: 60 },
+  { image: "/images/pompompurin/patapata.png", size: 45, bounceAlt: false },
+  { image: "/images/pompompurin/purupuru.png", size: 50, bounceAlt: true },
+  { image: "/images/pompompurin/dance.png", size: 55 },
+  { image: "/images/pompompurin/mukimuki.png", size: 50, bounceAlt: true },
+  { image: "/images/pompompurin/nawatobi.png", size: 45 },
 ];
 
 export const MarchingPurin = () => {
@@ -34,7 +33,7 @@ export const MarchingPurin = () => {
           position: "absolute",
           bottom: "10px",
           animation: `pompom-march 18s linear infinite`,
-          animationDelay: `${char.delay}s`,
+          animationDelay: `${index * 2}s`,
           animationFillMode: "backwards",
         };
 
