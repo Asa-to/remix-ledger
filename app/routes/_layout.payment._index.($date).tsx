@@ -42,11 +42,18 @@ const App: FC = () => {
 
   return (
     <Stack spacing={4}>
-      <PaymentHeader
-        date={date}
-        payments={payments}
-        user={users.filter((v) => v.id === myId)[0]}
-      />
+      <Group position="apart" align="center">
+        <PaymentHeader
+          date={date}
+          payments={payments}
+          user={users.filter((v) => v.id === myId)[0]}
+        />
+        <img
+          src="/images/pompompurin/purupuru.png"
+          alt="ぷるぷるプリン"
+          style={{ height: "120px"}}
+        />
+      </Group>
       <Button
         component={Link}
         to="/payment/create"

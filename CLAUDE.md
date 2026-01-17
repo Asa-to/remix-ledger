@@ -9,6 +9,7 @@ pnpm dev              # Start development server
 pnpm build            # Build for production (runs prisma generate first)
 pnpm typecheck        # Run TypeScript type checking
 pnpm test             # Run Jest tests
+pnpm test -- --testPathPattern="ファイル名"  # 特定のテストを実行
 ```
 
 ### Prisma Commands
@@ -18,6 +19,14 @@ npx prisma format     # Format schema file
 npx prisma generate   # Generate types from schema
 npx prisma db push    # Push schema changes to MongoDB
 npx prisma studio     # Open database GUI
+```
+
+### Lint & Format
+
+```bash
+npx eslint app/              # ESLint チェック
+npx prettier --check app/    # Prettier フォーマットチェック
+npx prettier --write app/    # Prettier 自動フォーマット
 ```
 
 ## Architecture

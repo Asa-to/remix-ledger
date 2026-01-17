@@ -1,5 +1,6 @@
 import {
   Button,
+  Flex,
   Grid,
   Group,
   LoadingOverlay,
@@ -21,6 +22,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { getNow } from "~/utils/date/getNow";
 import { userCookie } from "~/cookie.server";
 import { deleteToBuys, getAllToBuy } from "~/models/tobuy.server";
+import { MarchingPurin } from "~/components/PompomPurin/MarchingPurin";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const categories = (await getCategories()).map((item) => item.category);
@@ -84,86 +86,89 @@ export const PaymentCreate = () => {
   const redirectTo = location.state?.from ?? "/payment";
 
   return (
-    <Form method="POST" onSubmit={toggle}>
-      <LoadingOverlay visible={visible} overlayBlur={2} />
-      <Stack spacing={8}>
-        <input name="redirectTo" defaultValue={redirectTo} hidden />
-        <DateInput
-          label="支払日"
-          name="payDate"
-          valueFormat="YYYY年MM月DD日"
-          required
-          defaultValue={getNow()}
-        />
-        <Select
-          name="userId"
-          data={usersForSelect}
-          label="ユーザー"
-          defaultValue={myUserId ?? usersForSelect[0].value}
-          required
-        />
-        <Grid>
-          <Grid.Col span="auto">
-            <Select
-              data={categories ?? []}
-              label="カテゴリー"
-              name="category"
-              getCreateLabel={(query) => `+ Create ${query}`}
-              onCreate={(query) => {
-                setCategories((categories) => [query, ...categories]);
-                return query;
-              }}
-              required
-              defaultValue={categories[0]}
-              creatable
-              searchable
-            />
-          </Grid.Col>
-          <Grid.Col span="content">
-            <Radio.Group
-              label="収支選択"
-              name="type"
-              required
-              defaultValue={"0"}
-            >
-              <Group>
-                <Radio value="0" label="支出" />
-                <Radio value="1" label="収入" />
-              </Group>
-            </Radio.Group>
-          </Grid.Col>
-        </Grid>
-        <TextInput
-          label="支払い者の負担割合（％）"
-          type="text"
-          name="payPer"
-          defaultValue={50}
-          required
-          pattern="^[0-9]{2}|100"
-        />
-        <TextInput
-          label="収支"
-          type="text"
-          name="value"
-          inputMode="numeric"
-          required
-          pattern="^[0-9]+$"
-          autoFocus
-        />
-        <TextInput label="備考" name="remarks" />
-        <MultiSelect
-          data={toBuyListForSelect}
-          name="toBuyList"
-          label="買い物リストから購入したもの"
-        />
-        <Stack sx={{ flexDirection: "row" }}>
-          <Button onClick={goBack}>戻る</Button>
-          <Button type="submit" disabled={visible}>
-            決定
-          </Button>
+    <Flex direction="column" gap={8}>
+      <Form method="POST" onSubmit={toggle}>
+        <LoadingOverlay visible={visible} overlayBlur={2} />
+        <Stack spacing={8}>
+          <input name="redirectTo" defaultValue={redirectTo} hidden />
+          <DateInput
+            label="支払日"
+            name="payDate"
+            valueFormat="YYYY年MM月DD日"
+            required
+            defaultValue={getNow()}
+          />
+          <Select
+            name="userId"
+            data={usersForSelect}
+            label="ユーザー"
+            defaultValue={myUserId ?? usersForSelect[0].value}
+            required
+          />
+          <Grid>
+            <Grid.Col span="auto">
+              <Select
+                data={categories ?? []}
+                label="カテゴリー"
+                name="category"
+                getCreateLabel={(query) => `+ Create ${query}`}
+                onCreate={(query) => {
+                  setCategories((categories) => [query, ...categories]);
+                  return query;
+                }}
+                required
+                defaultValue={categories[0]}
+                creatable
+                searchable
+              />
+            </Grid.Col>
+            <Grid.Col span="content">
+              <Radio.Group
+                label="収支選択"
+                name="type"
+                required
+                defaultValue={"0"}
+              >
+                <Group>
+                  <Radio value="0" label="支出" />
+                  <Radio value="1" label="収入" />
+                </Group>
+              </Radio.Group>
+            </Grid.Col>
+          </Grid>
+          <TextInput
+            label="支払い者の負担割合（％）"
+            type="text"
+            name="payPer"
+            defaultValue={50}
+            required
+            pattern="^[0-9]{2}|100"
+          />
+          <TextInput
+            label="収支"
+            type="text"
+            name="value"
+            inputMode="numeric"
+            required
+            pattern="^[0-9]+$"
+            autoFocus
+          />
+          <TextInput label="備考" name="remarks" />
+          <MultiSelect
+            data={toBuyListForSelect}
+            name="toBuyList"
+            label="買い物リストから購入したもの"
+          />
+          <Stack sx={{ flexDirection: "row" }}>
+            <Button onClick={goBack}>戻る</Button>
+            <Button type="submit" disabled={visible}>
+              決定
+            </Button>
+          </Stack>
         </Stack>
-      </Stack>
-    </Form>
+      </Form>
+      <MarchingPurin />
+    </Flex>
   );
 };
 
